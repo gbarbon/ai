@@ -1,0 +1,152 @@
+% TEMPLATE for Usenix papers, specifically to meet requirements of
+%  USENIX '05
+% originally a template for producing IEEE-format articles using LaTeX.
+%   written by Matthew Ward, CS Department, Worcester Polytechnic Institute.
+% adapted by David Beazley for his excellent SWIG paper in Proceedings,
+%   Tcl 96
+% turned into a smartass generic template by De Clarke, with thanks to
+%   both the above pioneers
+% use at your own risk.  Complaints to /dev/null.
+% make it two column with no page numbering, default is 10 point
+
+% Munged by Fred Douglis <douglis@research.att.com> 10/97 to separate
+% the .sty file from the LaTeX source template, so that people can
+% more easily include the .sty file into an existing document.  Also
+% changed to more closely follow the style guidelines as represented
+% by the Word sample file. 
+
+% Note that since 2010, USENIX does not require endnotes. If you want
+% foot of page notes, don't include the endnotes package in the 
+% usepackage command, below.
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES & CONFIG
+%----------------------------------------------------------------------------------------
+
+%\documentclass[paper=a4, fontsize=11pt]{article} % A4 paper and 11pt font size
+\documentclass[letterpaper,twocolumn,10pt]{article}
+
+\usepackage{usenix,epsfig,endnotes}
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{listings} % source code package
+\usepackage{tikz} % graph package
+\usepackage{supertabular} % table span multiple pages
+\usetikzlibrary{shapes,arrows}
+\usepackage{courier}
+\usepackage[hyphens]{url} %for showing urls in bibliography
+%\usepackage{hyperref} %for breaking urls in bib
+%\hypersetup{colorlinks=true,breaklinks=true} %for showing urls
+
+%\usepackage{sectsty} % Allows customizing section commands
+%\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+%\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	TITLE
+%----------------------------------------------------------------------------------------
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
+
+\begin{document}
+
+%make title bold and 14 pt font (Latex default is non-bold, 16 pt)
+\title{\Large \bf Title}
+\subtitle{\textit{Subtitle - Project 2014}}
+
+
+\author{
+{\rm Gianluca Barbon}\\
+gbarbon@dsi.unive.it
+%\and
+}
+
+\date{July 24, 2014}
+\maketitle
+
+% Use the following at camera-ready time to suppress page numbers.
+% Comment it out when you first submit the paper for review.
+\thispagestyle{empty}
+
+
+\subsection*{Abstract}
+\emph{}
+
+%----------------------------------------------------------------------------------------
+%	1. Introduction
+%----------------------------------------------------------------------------------------
+
+\section{Introduction}
+\paragraph{}
+
+%----------------------------------------------------------------------------------------
+%	2. First section
+%----------------------------------------------------------------------------------------
+
+\section{First section}
+\paragraph{}
+
+\subsection{First subsection}
+\paragraph{}
+
+
+%----------------------------------------------------------------------------------------
+%	x. Conclusions
+%----------------------------------------------------------------------------------------
+
+\section{Conclusions}
+\paragraph{}
+
+\subsection{Future developments}
+\paragraph{}
+\cite{example} 
+
+%----------------------------------------------------------------------------------------
+%	NOTES AND BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+{\footnotesize \bibliographystyle{acm}
+\bibliography{biblio}
+}
+
+%\theendnotes
+
+%column break
+\vfill
+\break
+
+%----------------------------------------------------------------------------------------
+%	APPENDICES
+%----------------------------------------------------------------------------------------
+
+\onecolumn
+\appendix
+\label{app:appendixA}
+\lstset{language=Java}  
+\section{Appendix: example code}
+
+\subsection{Class test.java}
+
+
+\label{app:appendixB}
+\section{Appendix:}
+
+
+%----------------------------------------------------------------------------------------
+%	END OF DOCUMENT
+%----------------------------------------------------------------------------------------
+
+\end{document}
+
+
+
+
+
+
+
