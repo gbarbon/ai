@@ -1,1 +1,1 @@
-readme
+This is my repository for the Artificial Intelligence course.
