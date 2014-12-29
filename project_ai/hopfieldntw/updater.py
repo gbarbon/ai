@@ -21,7 +21,7 @@ def single_unit_updater(weights, unit_idx, pattern, threshold):
         return 1
     else:
         # pattern[unit_idx] = 0
-        return 0
+        return -1
 
 def energy(weights, pattern, threshold):
     E = 0
@@ -42,26 +42,27 @@ def updater(weights, ipattern, threshold):
     pattern = cp.copy(ipattern)
     #print("Initial pattern is")
     #print(pattern)
-    print("Initial weights are")
-    print(weights)
+    #print("Initial weights are")
+    #print(weights)
 
     #energy init
     E = energy(weights, pattern, threshold)
     print("The initial energy is ", E)
 
     k = 0
-    while k<200:
+    while k<10:
         randomRange = range(len(pattern))
         rd.shuffle(randomRange)
         for i in randomRange:
             pattern[i] = single_unit_updater(weights, i, pattern, threshold)
-            tempE = energy(weights, pattern, threshold)
-            #print("Temp energy at iteration ", i, " is ", E)
-            if tempE == E:
-                #break
-                return pattern
-            else:
-                E = tempE
+            #nota: l'energia deve essere calcolata ad ogni cambiamento di una singola unita' o di tutte le unita'?
+        tempE = energy(weights, pattern, threshold)
+        print("Temp energy at iteration ", i, " is ", tempE)
+        if tempE == E:
+            #break while loop
+            return pattern
+        else:
+            E = tempE
         k +=1
 
     return pattern
