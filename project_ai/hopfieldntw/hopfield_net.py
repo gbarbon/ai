@@ -6,7 +6,39 @@ import random as rnd
 import numpy as np
 import hebb_train as hb
 import updater as net
+import copy as cp
 
+# convert images from 0/1 to -1/1
+def image_converter(input_image):
+    image = cp.copy(input_image)
+    image *= 2
+    image -= 1
+    return image
+
+# corrupts images
+def corrupter(input_image, corrupt_param):
+    dim_row = input_image.shape[0]
+    dim_col = input_image.shape[1]
+    corrupted_image = cp.copy(input_image).flatten()
+
+    for i in range(corrupt_param):
+        corr_idx = rnd.randint(0, 48)
+        corrupted_image[corr_idx] *= -1
+    corrupted_image.shape = (dim_row,dim_col)
+
+    return corrupted_image
+
+#Plot the results
+def plotter(test_set, result_set):
+    k = 1
+    for i in range(len(test_set)):
+        plt.subplot(3, 2, k)
+        plt.imshow(test_set[i], interpolation="nearest")
+        k += 1
+        plt.subplot(3, 2, k)
+        plt.imshow(result_set[i], interpolation="nearest")
+        k += 1
+    plt.show()
 
 #Create the training patterns
 a_pattern = np.array([[0, 0, 0, 1, 0, 0, 0],
@@ -33,63 +65,39 @@ c_pattern = np.array([[0, 1, 1, 1, 1, 1, 0],
                       [0, 1, 0, 0, 0, 0, 0],
                       [0, 1, 1, 1, 1, 1, 0]])
 
-a_pattern *= 2
-a_pattern -= 1
-
-b_pattern *= 2
-b_pattern -= 1
-
-c_pattern *= 2
-c_pattern -= 1
+a_pattern = image_converter(a_pattern)
+b_pattern = image_converter(b_pattern)
+c_pattern = image_converter(c_pattern)
 
 train_input = np.array([a_pattern.flatten(), b_pattern.flatten(), c_pattern.flatten()])
+#train_input = np.array([b_pattern.flatten(), c_pattern.flatten()])
+
+#hebbian training
 weights = hb.hebb_train(train_input)
+
+# crating threshold array (each unit has its own threshold)
 threshold = np.zeros(weights.shape[0])
 
-a_test =  a_pattern.flatten()
-for i in range(5):
-    p = rnd.randint(0, 48)
-    a_test[p] *= -1
+# creating test set
+a_test = corrupter(a_pattern, 5)
+b_test = corrupter(b_pattern, 5)
+c_test = corrupter(c_pattern, 5)
 
-a_result = net.updater(weights, a_test, threshold)
+# testing the net
+a_result = net.updater(weights, a_test.flatten(), threshold)
+b_result = net.updater(weights, b_test.flatten(), threshold)
+c_result = net.updater(weights, c_test.flatten(), threshold)
 
+# pattern in the matrix shape
 a_result.shape = (7, 7)
 a_test.shape = (7, 7)
-
-b_test =  b_pattern.flatten()
-# for i in range(5):
-#     p = rnd.randint(0, 48)
-#     b_test[p] *= -1
-
-b_result = net.updater(weights, b_test, threshold)
-
 b_result.shape = (7, 7)
 b_test.shape = (7, 7)
-
-c_test =  c_pattern.flatten()
-for i in range(5):
-    p = rnd.randint(0, 48)
-    c_test[p] *= -1
-
-c_result = net.updater(weights, c_test, threshold)
-
 c_result.shape = (7, 7)
 c_test.shape = (7, 7)
 
 #Show the results
-plt.subplot(3, 2, 1)
-plt.imshow(a_test, interpolation="nearest")
-plt.subplot(3, 2, 2)
-plt.imshow(a_result, interpolation="nearest")
+test_set = np.array([a_test, b_test, c_test])
+result_set = np.array([a_result, b_result, c_result])
 
-plt.subplot(3, 2, 3)
-plt.imshow(b_test, interpolation="nearest")
-plt.subplot(3, 2, 4)
-plt.imshow(b_result, interpolation="nearest")
-
-plt.subplot(3, 2, 5)
-plt.imshow(c_test, interpolation="nearest")
-plt.subplot(3, 2, 6)
-plt.imshow(c_result, interpolation="nearest")
-
-plt.show()
+plotter(test_set, result_set)

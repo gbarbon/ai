@@ -15,7 +15,7 @@ def single_unit_updater(weights, unit_idx, pattern, threshold):
     #temp = sum(weights[unit_idx,:]*pattern[:]) - threshold[unit_idx]
     # we implement a powerful version that uses dotproduct with numpy
     temp = np.dot(weights[unit_idx, :], pattern[:]) - threshold[unit_idx]
-    print(temp)
+    #print(temp)
     if temp >= 0:
         # pattern[unit_idx] = 1
         return 1
@@ -56,8 +56,10 @@ def updater(weights, ipattern, threshold):
         for i in randomRange:
             pattern[i] = single_unit_updater(weights, i, pattern, threshold)
             #nota: l'energia deve essere calcolata ad ogni cambiamento di una singola unita' o di tutte le unita'?
+            # if i==11:
+            #     print("Elemento 11 del pattern: ", pattern[i])
         tempE = energy(weights, pattern, threshold)
-        print("Temp energy at iteration ", i, " is ", tempE)
+        print("Temp energy at iteration ", k, " is ", tempE)
         if tempE == E:
             #break while loop
             return pattern
