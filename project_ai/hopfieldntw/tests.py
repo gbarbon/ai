@@ -1,8 +1,7 @@
 __author__ = 'gbarbon'
 
 import numpy as np
-import trainers as hb
-import hopfield_net as net
+import HopfieldNet
 import utils as utl
 
 #Create the training patterns
@@ -37,20 +36,17 @@ c_pattern = utl.image_converter(c_pattern)
 train_input = np.array([a_pattern.flatten(), b_pattern.flatten(), c_pattern.flatten()])
 
 #hebbian training
-weights = hb.hebb_train(train_input)
-
-# crating threshold array (each unit has its own threshold)
-threshold = np.zeros(weights.shape[0])
+net = HopfieldNet.HopfieldNet(train_input, "hebbian", [7,7])
 
 # creating test set
 a_test = utl.corrupter(a_pattern, 5)
 b_test = utl.corrupter(b_pattern, 5)
 c_test = utl.corrupter(c_pattern, 5)
 
-# testing the net
-a_result = net.hopfield_net(weights, a_test, threshold)
-b_result = net.hopfield_net(weights, b_test, threshold)
-c_result = net.hopfield_net(weights, c_test, threshold)
+# training and testing the net
+a_result = net.test(a_test)
+b_result = net.test(b_test)
+c_result = net.test(c_test)
 
 #Show the results
 test_set = np.array([a_test, b_test, c_test])

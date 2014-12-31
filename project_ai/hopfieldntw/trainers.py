@@ -3,13 +3,7 @@ __author__ = 'gbarbon'
 import numpy as np
 
 # train intput is in the form of a vector
-def hebb_train(train_input):
-
-    #number of patterns
-    n_patterns = train_input.shape[0]
-
-    #number of units
-    n_units = train_input.shape[1]
+def hebb_train(train_input, n_patterns, n_units):
 
     #weights matrix init to zeros
     weights = np.zeros((n_units, n_units))
