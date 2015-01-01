@@ -20,7 +20,7 @@ def corrupter(input_image, corrupt_param):
     corrupted_image = cp.copy(input_image).flatten()
 
     for i in range(corrupt_param):
-        corr_idx = rnd.randint(0, 48)
+        corr_idx = rnd.randint(0, (dim_row*dim_col-1))
         corrupted_image[corr_idx] *= -1
     corrupted_image.shape = (dim_row, dim_col)
 
