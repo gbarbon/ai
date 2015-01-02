@@ -4,6 +4,8 @@ from PIL import Image
 import os
 import numpy as np
 
+# NOTE: in images dimension are: first:= columns, second:= rows
+
 def image_cropper(image, new_dimensions):
     width, height = image.size   # Get dimensions
 
@@ -33,7 +35,8 @@ def to_blackwhite(input_image):
     #             image[i][j] = 1
     return input_image.convert("1")
 
-def toarray(image):
+# convert image to a matrix of 0 and 1 and to black and white
+def tomatrix_bew(image):
     imarray = np.array(image.getdata(),np.uint8).reshape(image.size[1], image.size[0])
     #print(imarray)
     #imarray = np.array(image)
@@ -47,6 +50,22 @@ def toarray(image):
                 newarray[i][j] = 1
             else:
                 newarray[i][j] = 0
+    return newarray
+
+# convert image to a matrix of 0 and 1
+def tomatrix(image):
+    matrix = np.array(image.getdata(),np.uint8).reshape(image.size[1], image.size[0])
+    print(matrix)
+    print(matrix.shape)
+    rows = matrix.shape[0]
+    cols = matrix.shape[1]
+    newarray = np.zeros((rows, cols))
+
+    for i in range(rows):
+        for j in range(cols):
+            if matrix[i][j] == 0:
+                newarray[i][j] = 1
+    print(newarray)
     return newarray
 
 def collectimages(finaldim, dir):
@@ -79,17 +98,31 @@ def collectimages(finaldim, dir):
             im = Image.open(newdir)
             #im.show()
 
-            imp = image_cropper(im, [100, 100])
-            imp = image_resizer(imp, [finaldim[0], finaldim[1]])
+            orig_dim = im.size
+            if orig_dim[0]>100 or orig_dim[1]>100:
+                imp = image_cropper(im, [100, 100])
+                imp = image_resizer(imp, finaldim)
+            else:
+                imp = image_resizer(im, [40, 70])
+                print(imp.size)
+                imp = image_resizer(im, finaldim)
+                print(imp.size)
             imp = to_greyscale(imp)
             # print(imp)
-            #imp = to_blackwhite(imp)
-            # imp.show()
+            #imp.show()
 
-            imarray = toarray(imp)
-            testt = np.array(imp)
-            finalimage = imarray.flatten()
+            #imarray = tomatrix_bew(imp)
+
+            imp = to_blackwhite(imp)
+            #imp.show()
+            imarray = tomatrix(imp)
+
+            # testt = np.array(imp)
+            # finalimage = imarray.flatten()
+            # print(imarray)
             dataset[i] = imarray.flatten()
+            print(imarray)
+            print(dataset[i].reshape(finaldim[1], finaldim[0]))
 
             # print(imarray.shape)
             # print(imp.size)

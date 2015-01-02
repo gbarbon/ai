@@ -56,29 +56,34 @@ def test1():
     utl.plotter(test_set, result_set)
 
 def test2():
-    dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/tiff_images_100x100"
-    temp_train = im.collectimages([16, 16], dir)
+    dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/tiff_images_swidth"
+    dim = [16, 16] #in the form rows * cols
+    testel = 6 #elements for training
+    corruption_val = 0
 
-    train_input = np.zeros((5, 16*16))
-    for i in range(5):
+    image_dim = [dim[1], dim[0]] # changing form for images
+    temp_train = im.collectimages(image_dim, dir)
+
+    train_input = np.zeros((testel, dim[0]*dim[1]))
+    for i in range(testel):
         train_input[i] = temp_train[i]
 
     for i in range(train_input.shape[0]):
-        temp = utl.image_converter(train_input[i].reshape(16,16))
+        temp = utl.image_converter(train_input[i].reshape(dim))
         train_input[i] = temp.flatten()
-        print(train_input[i].reshape(16,16))
+        print(train_input[i].reshape(dim))
 
-    net = HopfieldNet.HopfieldNet(train_input, "hebbian", [16, 16])
+    net = HopfieldNet.HopfieldNet(train_input, "hebbian", dim)
 
-    a_pattern = train_input[0].reshape(16, 16)
-    b_pattern = train_input[1].reshape(16, 16)
-    c_pattern = temp_train[2].reshape(16, 16)
+    a_pattern = train_input[0].reshape(dim)
+    b_pattern = train_input[1].reshape(dim)
+    c_pattern = utl.image_converter(temp_train[2].reshape(dim))
     print(a_pattern)
 
     # creating test set
-    a_test = utl.corrupter(a_pattern, 10)
-    b_test = utl.corrupter(b_pattern, 40)
-    c_test = utl.corrupter(c_pattern, 10)
+    a_test = utl.corrupter(a_pattern, corruption_val)
+    b_test = utl.corrupter(b_pattern, corruption_val)
+    c_test = utl.corrupter(c_pattern, corruption_val)
 
     # dummy_array = np.zeros((16,16))
     # for i in range(dummy_array.shape[0]):

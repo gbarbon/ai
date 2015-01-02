@@ -6,7 +6,8 @@ import numpy as np
 def hebb_train(train_input, n_patterns, n_units):
 
     #weights matrix init to zeros
-    weights = np.zeros((n_units, n_units))
+    #weights = np.zeros((n_units, n_units))
+    weights = np.random.rand(n_units, n_units)
 
     for i in range(n_units):
         for j in range(n_units):
