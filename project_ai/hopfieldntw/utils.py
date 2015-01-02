@@ -29,12 +29,13 @@ def corrupter(input_image, corrupt_param):
 
 # Plot the results
 def plotter(test_set, result_set):
+    ntest = len(test_set)
     k = 1
-    for i in range(len(test_set)):
-        plt.subplot(3, 2, k)
+    for i in range(ntest):
+        plt.subplot(ntest, 2, k)
         plt.imshow(test_set[i], interpolation="nearest")
         k += 1
-        plt.subplot(3, 2, k)
+        plt.subplot(ntest, 2, k)
         plt.imshow(result_set[i], interpolation="nearest")
         k += 1
     plt.show()

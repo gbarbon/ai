@@ -28,12 +28,6 @@ class HopfieldNet:
 
     def single_unit_updater(self, unit_idx, pattern):
 
-        # n_units = weights.shape[0]
-        # temp = 0
-        # for j in range(n_units):
-        #     temp += weights[unit_idx,j]*pattern[j]
-        # temp = temp - threshold[unit_idx]
-
         #temp = sum(weights[unit_idx,:]*pattern[:]) - threshold[unit_idx]
         # we implement a powerful version that uses dotproduct with numpy
         temp = np.dot(self.weights[unit_idx, :], pattern[:]) - self.threshold[unit_idx]
@@ -61,21 +55,12 @@ class HopfieldNet:
     # function overloading in threshold
     def test(self, pattern, threshold=0):
 
-        #pattern = cp.copy(ipattern)
-
-        # iprow = pattern.shape[0]
-        # ipcols = pattern.shape[1]
-        # if iprow != self.image_dimension[0] ||  ipcols != self.image_dimensions[1]:
-
         #setting threshold if threshold != 0
         if threshold != 0:
             self.threshold = threshold
 
-        #flattening pattern
-        pattern = pattern.flatten()
-
-        #energy init
-        energy = self.energy(pattern)
+        pattern = pattern.flatten()  # flattening pattern
+        energy = self.energy(pattern)  # energy init
 
         k = 0
         while k < 10:
