@@ -58,10 +58,10 @@ def test1():
 
 
 def test2():
-    images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/tiff_images_swidth"
+    images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/courier_digits_data_set/tiff_images_swidth"
     dim = [14, 9]  # in the form rows * cols
     testel = 8  # elements for training
-    corruption_val = 0
+    corruption_val = 30
 
     image_dim = [dim[1], dim[0]]  # changing shape for images
 
@@ -90,5 +90,37 @@ def test2():
     # Plotting results
     utl.plotter(test_set, result_set)
 
+def test3():
+    images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/digital7_digit_data_set/tiff_images_rawcut"
+    dim = [25, 16]  # in the form rows * cols
+    testel = 10  # elements for training
+    corruption_val = 10
 
-test2()
+    image_dim = [dim[1], dim[0]]  # changing shape for images
+
+    # Loading images data set
+    temp_train = iM.collectimages(image_dim, images_dir)
+
+    train_input = np.zeros((testel, dim[0] * dim[1]))
+    for i in range(testel):
+        train_input[i] = temp_train[i]
+
+    # image conversion to 1 and -1 for Hopfield net
+    for i in range(train_input.shape[0]):
+        temp = utl.image_converter(train_input[i].reshape(dim))
+        train_input[i] = temp.flatten()
+
+    # training the net
+    net = HopfieldNet.HopfieldNet(train_input, "pseudoinv", dim)
+
+    # testing the net
+    test_set = np.zeros((testel, dim[0], dim[1]))
+    result_set = np.zeros((testel, dim[0], dim[1]))
+    for i in range(testel):
+        test_set[i] = utl.corrupter(train_input[i].reshape(dim), corruption_val)
+        result_set[i] = net.test(test_set[i])
+
+    # Plotting results
+    utl.plotter(test_set, result_set)
+
+test3()

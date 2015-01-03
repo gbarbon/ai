@@ -22,9 +22,9 @@ class HopfieldNet:
         # net training
         if trainer_type == "hebbian":
             self.weights = tr.hebb_train(train_input, n_patterns, self.n_units)
-            #elif:
-            #   blabla
-            #else:
+        elif trainer_type == "pseudoinv":
+            self.weights = tr.pseudo_inverse_train(train_input, n_patterns, self.n_units)
+        #else:
 
     def single_unit_updater(self, unit_idx, pattern):
 

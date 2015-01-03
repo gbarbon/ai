@@ -89,7 +89,7 @@ def collectimages(finaldim, img_dir):
             imp = imp.filter(ImageFilter.MedianFilter(size=5))
             #imp = imp.filter(ImageFilter.ModeFilter(size=5))
 
-            if orig_dim[0] > 100 or orig_dim[1] > 100:
+            if orig_dim[0] > 100 and orig_dim[1] > 100:
                 # crop if dimensions higher than 100
                 imp = image_cropper(imp, [100, 100])
                 imp = image_resizer(imp, finaldim)
