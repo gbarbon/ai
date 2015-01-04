@@ -166,6 +166,17 @@ Anyway, there are some problems in the use of Hopfield network as content-addres
 \item patterns are not recalled with the same emphasis
 \end{itemize}
 
+\subsection{Pseudo-Inverse Rule}
+Pseudo inverse rule try to map a memory to itself before thresholding. In this way the problem can be treated as a real value regression problem, the solution of which is given by the pseudo-inverse. We can consider the Hebb rule as a special case of pseudo-inverse rule for orthogonal training vectors. However, in this rule we have no local computation and no incremental updates, because it involves the calculation of an inverse.
+\begin{displaymath}
+	w_{ij} = \frac{1}{N} \sum_{\substack{u=1\\v=1    }}^m x_i^u (Q^-1)^{uv} x_j^v
+\end{displaymath}
+where $m$ is the total number of patterns and $q$ is:
+\begin{displaymath}
+	q_{uv} = \frac{1}{N} \sum_{i=1}^N x_i^u x_j^v
+\end{displaymath}
+This rule, also called projection learning rule, allows to improve the retrieval capability of the net with respect to Hebb rule, bringing the maximum number of pattern to $0.5N$.
+
 %----------------------------------------------------------------------------------------
 %	x. Conclusions
 %----------------------------------------------------------------------------------------
