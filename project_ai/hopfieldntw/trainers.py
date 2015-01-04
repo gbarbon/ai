@@ -19,6 +19,7 @@ def hebb_train(train_input, n_patterns, n_units):
     #             # print("Temp weight at this point is", weights[i,j])
     #             # uguale???: weights[i,j] = sum(train_input[:,i]*train_input[:,j])
 
+    # 1
     for l in range(n_patterns):
         for i in range(n_units):
             for j in range(n_units):
@@ -30,12 +31,19 @@ def hebb_train(train_input, n_patterns, n_units):
                 # print("Temp weight at this point is", weights[i,j])
                 # uguale???: weights[i,j] = sum(train_input[:,i]*train_input[:,j])
 
-    # for i in range(n_units):
-    #     for j in range(n_units):
-    #         if i == j:
-    #             continue
-    #         else:
-    #             weights[i, j] = np.dot(train_input[:][i], train_input[:][j])
+    # 2
+    for i in range(n_units):
+        for j in range(n_units):
+            if i == j:
+                continue
+            else:
+                weights[i, j] = np.dot(train_input[:][i], train_input[:][j])
+
+    # 3
+    train_transp = zip(*train_input)
+    weights = np.dot(train_transp, train_transp)
+    for i in range(len(weights)):
+        weights[i][j] = 0
 
     weights *= 1 / float(n_units)
     return weights
@@ -60,7 +68,7 @@ def q_pseudo_inv(train_input, n_patterns, n_units):
             q[u][v] = np.dot(train_input[v], train_input[u])
 
     q *= 1 / float(n_units)
-    q = np.linalg.inv(q)
+    q = np.linalg.inv(q) # inverseof the matrix
 
     return q
 

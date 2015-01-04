@@ -43,6 +43,8 @@
 %\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
 %\setlength\parindent{0pt} % Removes all indentation from paragraphs
 
+\newtheorem{theorem}{Theorem}[section]
+
 %----------------------------------------------------------------------------------------
 %	TITLE
 %----------------------------------------------------------------------------------------
@@ -63,7 +65,7 @@
 
 \author{
 {\rm Gianluca Barbon}\\
-gbarbon@dsi.unive.it
+818453@stud.unive.it
 %\and
 }
 
@@ -75,39 +77,54 @@ gbarbon@dsi.unive.it
 \thispagestyle{empty}
 
 
-\subsection*{Abstract}
-\emph{}
+%\subsection*{Abstract}
+\begin{abstract}
+\emph{This report describes the artificial intelligence course project. This project consists in the implementation of a Hopfield Network using python. The weight matrix will be computed by using different algorithms, in such a way to analyse performances and thus identify the best solution.}
+\end{abstract}
 
 %----------------------------------------------------------------------------------------
 %	1. Introduction
 %----------------------------------------------------------------------------------------
 
 \section{Introduction}
-\paragraph{}
 
-%----------------------------------------------------------------------------------------
-%	2. First section
-%----------------------------------------------------------------------------------------
+\subsection{Neural Networks}
+They are used for recognition and classification problem, they are capable to learn and so to generalize, that is produce outputs in correspondence of inputs never met before. The training of the net take place presenting a training set (set of example) as input. The answer given by the net for each example will be compared to the desired answer, the difference (or error) between the two will be evaluated and finally the weights will be adjusted by looking at this difference. the process is repeated for the entire training set, until the produced error is minimized, so under a preset threshold.
 
-\section{Neural Networks}
-\paragraph{}
-Utilizzate per il riconoscimento, capaci di apprendere e quindi di generalizzare, cioè produrre uscite in corrispondenza di ingressi non ncontrati durante l'addestramento.
+\subsubsection{Classification Problems}
+Classification problems consists in the classification of an object by looking at its features.
 
-Addestramento della rete avviene presendtando in ingresso alla rete un training set, o insieme di esempi. La risposta fornita dalla rete per ogni esempio viene confrontatata con la risposta desiderata, viene valutata la differenza (errore) fra le due e basandosi su quest'ultima si aggiustano i pesi. Il processo è ripetuto sull'intero training set finché l'errore prodotto non è al di sotto di una soglia prestabilita.
-\subsection{Classification Problems}
-Problemi di classificazione consistono nel classificare un oggetto in base alle caratteristiche.
-\paragraph{}
-
-%----------------------------------------------------------------------------------------
-%	2. First section
-%----------------------------------------------------------------------------------------
-
-\section{Hopfield Network}
-\paragraph{}
+\subsection{Hopfield Network}
 Hopfield networks are neural networks that can be seen as non linear dynamic systems. They are also called recurring networks or feedback networks. 
-
-\subsection{First subsection}
-\paragraph{}
+We consider neural networks as non linear dynamic systems, where we consider the time variable. In order to do this, we must take into account loops, so we will use recurrent networks.
+recurrent networks with non linear units are difficult to analyse: they can converge to a stable state, oscillate or follow chaotic trajectories whose behaviour is not predictable.
+However, the american physicist J.J. Hopfield discovered that with symmetric connections there will exist a stable global energy function.
+The Hopfield networks have the following properties:
+\begin{itemize}
+\item\textbf{sigle layer recurrent networks} in which each neuron is connected to all the others, with the exception of itself (so no cycles are admitted)
+\item\textbf{symmetric:} the synaptic weight matrix is symmetric, so W=Wt. This means that the weights is the same in both direction between two neurons.
+\item\textbf{not linear:} in the continuous formulation, each neuron has a non linear invertible activation function
+\end{itemize}
+As for the neuron update, we can use three possible approaches:
+\begin{itemize}
+\item\textbf{asynchronous update:} where neurons are updated one by one
+\item\textbf{synchronous update:} all neurons are updated at the same moment
+\item\textbf{continuous update:} all neurons are updated in a continuous way
+\end{itemize}
+There exists two formulation of the Hopfield model: the discrete one and the continuous one, that differ for the way in which the time flows.
+For this project we will use the discrete model. In this model the time flows in discrite way and neurons updates in asynchronous way. as for the neuron input, the McCulloch and Pitts model is used, with the adding of an external influence (or bias?) factor. (formula) The activation function is the following (formula). The update of the neurons is a random process and the selection of the unit to be updated can be done in two ways:
+\begin{enumerate}
+\item at each time instant the unit to be updated is chosen randomly (this mode is useful in simulations)
+\item each unit is updated independently with constant probability at each time instant
+\end{enumerate}
+Unlike feedforward networks, a Hopfield network is a dynamic system. It starts from an initial state (formula) and evolves through a trajectory until it reach a fixed point in which $V(t+1)=V(t)$ (convergence). (immagine) The convergence is granted thanks to an energy function E that govern the systems (formula) and thanks to the Hopfield theorem, that supply a sufficient condition for the convergence of the system.
+\begin{theorem}[Hopfield theorem: discrete case]
+If the weights matrix in a Hopfield network is symmetric, $\textsf{diag}(W)=0$, the Energy Function will be a Lyapunov function for the system, so 
+\begin{center}
+$\Delta E = E(t+1)-E(t)\leq 0$
+\end{center}
+with the equivalence when the system reach a stationary point.
+\end{theorem}
 
 
 %----------------------------------------------------------------------------------------
@@ -115,10 +132,8 @@ Hopfield networks are neural networks that can be seen as non linear dynamic sys
 %----------------------------------------------------------------------------------------
 
 \section{Conclusions}
-\paragraph{}
 
 \subsection{Future developments}
-\paragraph{}
 \cite{example} 
 
 %----------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.2.11)  5 DEC 2014 12:04
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.2.11)  4 JAN 2015 16:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -600,6 +600,8 @@ Package: courier 2005/04/12 PSNFSS-v9.2a (WaS)
 \Urlmuskip=\muskip11
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
+\c@theorem=\count130
+
 (/usr/local/texlive/2013/texmf-dist/tex/latex/titling/titling.sty
 Package: titling 2009/09/04 v2.1d maketitle typesetting
 \thanksmarkwidth=\skip52
@@ -609,33 +611,33 @@ Package: titling 2009/09/04 v2.1d maketitle typesetting
 (./report_ai.aux)
 \openout1 = `report_ai.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 57.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 59.
  (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ) (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count130
+\scratchcounter=\count131
 \scratchdimen=\dimen177
 \scratchbox=\box60
-\nofMPsegments=\count131
-\nofMParguments=\count132
+\nofMPsegments=\count132
+\nofMParguments=\count133
 \everyMPshowfont=\toks36
-\MPscratchCnt=\count133
+\MPscratchCnt=\count134
 \MPscratchDim=\dimen178
-\MPnumerator=\count134
-\makeMPintoPDFobject=\count135
+\MPnumerator=\count135
+\makeMPintoPDFobject=\count136
 \everyMPtoPDFconversion=\toks37
 ) (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
@@ -685,82 +687,102 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\c@lstlisting=\count136
+\c@lstlisting=\count137
 
 ABD: EveryShipout initializing macros
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 71.
-LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 71
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 73.
+LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 73
 .
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 71
+LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 73
 .
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 71
+LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 73
 .
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 71
+LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 73
 .
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 71.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 73.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 71.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 73.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 71.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 73.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 71.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 73.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 78.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 81.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 92.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 94.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 104.
 
-Underfull \hbox (badness 1571) in paragraph at lines 94--95
-\T1/ptm/m/n/10 in cor-rispon-denza di in-gressi non ncon-trati du-rante
- []
 
-(./report_ai.bbl) [1{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/
-pdftex.map}
+(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 104.
+ [1{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
-(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 120.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 120.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 120.
+LaTeX Font Info:    Try loading font information for T1+cmss on input line 122.
+
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/t1cmss.fd
+File: t1cmss.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+) (./report_ai.bbl) [2
+
+] (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
-) [2
+)
+[3
 
-]
-(./report_ai.aux) ) 
+] (./report_ai.aux) ) 
 Here is how much of TeX's memory you used:
- 14677 strings out of 493315
- 284393 string characters out of 6137904
- 384385 words of memory out of 5000000
- 17782 multiletter control sequences out of 15000+600000
- 45137 words of font info for 59 fonts, out of 8000000 for 9000
+ 14760 strings out of 493315
+ 285922 string characters out of 6137904
+ 388491 words of memory out of 5000000
+ 17851 multiletter control sequences out of 15000+600000
+ 63492 words of font info for 93 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 56i,8n,56p,452b,278s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.
-enc}</usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/
-local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texl
-ive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on report_ai.pdf (2 pages, 39737 bytes).
+ 56i,8n,56p,617b,278s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/cm-sup
+er/cm-super-t1.enc}{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.
+enc}</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pf
+b></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+></usr/local/texlive/2013/texmf-dist/fonts/type1/public/cm-super/sfsi1000.pfb><
+/usr/local/texlive/2013/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/
+texlive/2013/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/20
+13/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2013/texmf-d
+ist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on report_ai.pdf (3 pages, 71600 bytes).
 PDF statistics:
- 27 PDF objects out of 1000 (max. 8388607)
- 19 compressed objects within 1 object stream
+ 47 PDF objects out of 1000 (max. 8388607)
+ 34 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
