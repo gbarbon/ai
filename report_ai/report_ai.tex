@@ -44,6 +44,7 @@
 %\setlength\parindent{0pt} % Removes all indentation from paragraphs
 
 \newtheorem{theorem}{Theorem}[section]
+\DeclareMathOperator*{\sign}{sgn}
 
 %----------------------------------------------------------------------------------------
 %	TITLE
@@ -59,8 +60,8 @@
 \begin{document}
 
 %make title bold and 14 pt font (Latex default is non-bold, 16 pt)
-\title{\Large \bf AI Project}
-\subtitle{\textit{Subtitle - Project 2014}}
+\title{\Large \bf An Hopfield Network for Digit Recognition}
+\subtitle{\textit{Artificial Intelligence Course Project}}
 
 
 \author{
@@ -94,7 +95,7 @@ They are used for recognition and classification problem, they are capable to le
 \subsubsection{Classification Problems}
 Classification problems consists in the classification of an object by looking at its features.
 
-\subsection{Hopfield Network}
+\subsection{Hopfield Network \cite{pelillo}}
 Hopfield networks are neural networks that can be seen as non linear dynamic systems. They are also called recurring networks or feedback networks. 
 We consider neural networks as non linear dynamic systems, where we consider the time variable. In order to do this, we must take into account loops, so we will use recurrent networks.
 recurrent networks with non linear units are difficult to analyse: they can converge to a stable state, oscillate or follow chaotic trajectories whose behaviour is not predictable.
@@ -102,7 +103,7 @@ However, the american physicist J.J. Hopfield discovered that with symmetric con
 The Hopfield networks have the following properties:
 \begin{itemize}
 \item\textbf{sigle layer recurrent networks} in which each neuron is connected to all the others, with the exception of itself (so no cycles are admitted)
-\item\textbf{symmetric:} the synaptic weight matrix is symmetric, so W=Wt. This means that the weights is the same in both direction between two neurons.
+\item\textbf{symmetric:} the synaptic weight matrix is symmetric, so $W=W^T$. This means that the weights is the same in both direction between two neurons.
 \item\textbf{not linear:} in the continuous formulation, each neuron has a non linear invertible activation function
 \end{itemize}
 As for the neuron update, we can use three possible approaches:
@@ -112,20 +113,58 @@ As for the neuron update, we can use three possible approaches:
 \item\textbf{continuous update:} all neurons are updated in a continuous way
 \end{itemize}
 There exists two formulation of the Hopfield model: the discrete one and the continuous one, that differ for the way in which the time flows.
-For this project we will use the discrete model. In this model the time flows in discrite way and neurons updates in asynchronous way. as for the neuron input, the McCulloch and Pitts model is used, with the adding of an external influence (or bias?) factor. (formula) The activation function is the following (formula). The update of the neurons is a random process and the selection of the unit to be updated can be done in two ways:
+For this project we will use the discrete model. In this model the time flows in discrite way and neurons updates in asynchronous way. as for the neuron input, the McCulloch and Pitts model is used, with the adding of an external influence (or bias?) factor:
+\begin{displaymath}
+	H_i = \underbrace{\sum_{j \neq i} w_{ij} V_j}_\textrm{M\&P model} + \underbrace{I_i}_\textrm{external input}
+\end{displaymath}
+The activation function is the following:
+\begin{align}
+	V_i = \begin{cases}
+		+1 & \text{se } H_i > 0 \\
+		-1 & \text{se } H_i < 0
+	\end{cases}\label{eq:learningrule}
+\end{align}
+The update of the neurons is a random process and the selection of the unit to be updated can be done in two ways:
 \begin{enumerate}
 \item at each time instant the unit to be updated is chosen randomly (this mode is useful in simulations)
 \item each unit is updated independently with constant probability at each time instant
 \end{enumerate}
-Unlike feedforward networks, a Hopfield network is a dynamic system. It starts from an initial state (formula) and evolves through a trajectory until it reach a fixed point in which $V(t+1)=V(t)$ (convergence). (immagine) The convergence is granted thanks to an energy function E that govern the systems (formula) and thanks to the Hopfield theorem, that supply a sufficient condition for the convergence of the system.
+Unlike feedforward networks, a Hopfield network is a dynamic system. It starts from an initial state
+\begin{align*}
+	\vec{V}(0) = (V_1(0), \dots, V_n(0))^T
+\end{align*}
+and evolves through a trajectory until it reach a fixed point in which $V(t+1)=V(t)$ (convergence). The Hopfield theorem supplies a sufficient condition for the convergence of the system. It uses an energy function E that govern the systems :
+\begin{align}
+	E = - \frac{1}{2} \sum_{i=1}^n \sum_{\substack{j=1 \\ j \neq i}}^n w_{ij} V_i V_j - \sum_{i=1}^n I_i V_i\label{eq:energy}
+\end{align} 
 \begin{theorem}[Hopfield theorem: discrete case]
-If the weights matrix in a Hopfield network is symmetric, $\textsf{diag}(W)=0$, the Energy Function will be a Lyapunov function for the system, so 
+If the weights matrix in a Hopfield network is symmetric, $\textsf{diag}(W)=0$, the Energy Function will be a Lyapunov function for the system, so: 
 \begin{center}
 $\Delta E = E(t+1)-E(t)\leq 0$
 \end{center}
 with the equivalence when the system reach a stationary point.
 \end{theorem}
 
+\subsection{Hebb's rule}
+In contrast with computer's byte-addressable memory, that adopt a precise memory address to locate information, the human brain utilize content-addressable memory, that uses the content of data to locate information. The Hebb rule has been introduced to describe such behaviour and states that the weight between two neurons increases if the two neurons activate simultaneously. In detail, the Hebb postulate says that: 
+\begin{center}
+\emph{Let us assume that the persistence or repetition of a reverberatory activity (or "trace") tends to induce lasting cellular changes that add to its stability. [\ldots] When an axon of cell A is near enough to excite a cell B and repeatedly or persistently takes part in firing it, some growth process or metabolic change takes place in one or both cells such that A's efficiency, as one of the cells firing B, is increased. }\cite{Hebb49}
+\end{center}
+The memory is represented like a set of $P$ patterns $x^\mu$, where $\mu = 1,\ldots,\P$: when a new pattern $x$ is presented, the net typically answers producing the pattern in memory that most resembles to $x$. Accordingly to the Hebb postulate, proportional weights are used in the activation between a pre and a post synaptic neurons:
+\begin{displaymath}
+	w_{ij} = \frac{1}{N} \sum_{\mu = 1}^P x_i^\mu x_j^\mu
+\end{displaymath}
+where $N$ is the number of binary units with output $s_1,\ldots,s_N$. The recall mechanism is the following:
+\begin{displaymath}
+	s_i = \sign\left(\sum_j w_{ij} s_j \right)
+\end{displaymath}
+Anyway, there are some problems in the use of Hopfield network as content-addressed memories:
+\begin{itemize}
+\item the maximum number of pattern is $0.15N$
+\item sometimes the net produces spurious states, that is states that do not belong to the memorized patterns
+\item the recalled pattern is not necessarily the most similar to the input one
+\item patterns are not recalled with the same emphasis
+\end{itemize}
 
 %----------------------------------------------------------------------------------------
 %	x. Conclusions
@@ -133,16 +172,17 @@ with the equivalence when the system reach a stationary point.
 
 \section{Conclusions}
 
-\subsection{Future developments}
-\cite{example} 
+%\subsection{Future developments}
+\cite{pelillo} 
 
 %----------------------------------------------------------------------------------------
 %	NOTES AND BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
 
-{\footnotesize \bibliographystyle{acm}
+%{\footnotesize \bibliographystyle{acm}
+\bibliographystyle{abbrv}
 \bibliography{biblio}
-}
+%}
 
 %\theendnotes
 
@@ -157,7 +197,7 @@ with the equivalence when the system reach a stationary point.
 \onecolumn
 \appendix
 \label{app:appendixA}
-\lstset{language=Java}  
+\lstset{language=Python}  
 \section{Appendix: example code}
 
 \subsection{Class test.java}

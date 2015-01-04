@@ -1,8 +1,12 @@
 \begin{thebibliography}{1}
 
-\bibitem{example}
-{\sc example}.
-\newblock example.
-\newblock {\em example\/}.
+\bibitem{Hebb49}
+D.~O. Hebb.
+\newblock {\em The Organization of Behavior}.
+\newblock Wiley, New York, 1949.
+
+\bibitem{pelillo}
+M.~Pelillo.
+\newblock Artificial intelligence course, 2014.
 
 \end{thebibliography}
