@@ -188,7 +188,20 @@ This rule, also called projection learning rule \cite{personnazcoll}, allows to 
 
 \subsubsection{Storkey Rule \cite{Storkey97increasingthe}}
 Even if the pseudo-inverse rule performs better than the Hebbian one, it is never incremental and local only if not immediate. Storkey propose an algorithm to increase the capacity of the Hebbian rule without losing locality and incrementality.
+\begin{displaymath}
+	w_{ij}^0=0\ \forall\ i,j\ \ \text{and}
+\end{displaymath}
+\begin{displaymath}
+	w_{ij}^{\nu} = w_{ij}^{\nu-1}+ \frac{1}{N} x_i^{\nu}x_j^{\nu} - \frac{1}{N} x_i^{\nu}h_{ji}^{\nu} - \frac{1}{N} h_{ij}^{\nu}x_j^{\nu}  
+\end{displaymath}
+where $h_{ij}$ is a form of local field at neuron $i$:
+\begin{displaymath}
+	h_{ij}^{\mu} = \sum_{\substack{k=1\\k\neq i,j}}^n w_{ij}^{\mu-1} x_k^{\mu}
+\end{displaymath}
 
+\section{Implementation}
+
+\section{Results}
 
 %----------------------------------------------------------------------------------------
 %	x. Conclusions
@@ -197,7 +210,7 @@ Even if the pseudo-inverse rule performs better than the Hebbian one, it is neve
 \section{Conclusions}
 
 %\subsection{Future developments}
-\cite{pelillo} 
+%\cite{pelillo} 
 
 %----------------------------------------------------------------------------------------
 %	NOTES AND BIBLIOGRAPHY

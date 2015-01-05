@@ -24,6 +24,8 @@ class HopfieldNet:
             self.weights = tr.hebb_train(train_input, n_patterns, self.n_units)
         elif trainer_type == "pseudoinv":
             self.weights = tr.pseudo_inverse_train(train_input, n_patterns, self.n_units)
+        elif trainer_type == "storkey":
+            self.weights = tr.storkey_train(train_input, n_patterns, self.n_units)
         #else:
 
     def single_unit_updater(self, unit_idx, pattern):

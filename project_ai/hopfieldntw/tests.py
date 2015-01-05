@@ -5,6 +5,12 @@ import HopfieldNet
 import utils as utl
 import imageManager as iM
 
+testnumber = 2
+testel = 10 # elements to test/train
+corruption_val = 5
+trainers = ["hebbian","pseudoinv","storkey"]
+trainer = trainers[2]
+
 
 def test1():
     # Create the training patterns
@@ -39,7 +45,7 @@ def test1():
     train_input = np.array([a_pattern.flatten(), b_pattern.flatten(), c_pattern.flatten()])
 
     #hebbian training
-    net = HopfieldNet.HopfieldNet(train_input, "hebbian", [7, 7])
+    net = HopfieldNet.HopfieldNet(train_input, trainer, [7, 7])
 
     # creating test set
     a_test = utl.corrupter(a_pattern, 5)
@@ -60,8 +66,9 @@ def test1():
 def test2():
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/courier_digits_data_set/tiff_images_swidth"
     dim = [14, 9]  # in the form rows * cols
-    testel = 8  # elements for training
-    corruption_val = 30
+    #testel = 8  # elements for training
+    #corruption_val = 5
+    # trainers = ["hebbian","pseudoinv","storkey"]
 
     image_dim = [dim[1], dim[0]]  # changing shape for images
 
@@ -78,7 +85,7 @@ def test2():
         train_input[i] = temp.flatten()
 
     # training the net
-    net = HopfieldNet.HopfieldNet(train_input, "hebbian", dim)
+    net = HopfieldNet.HopfieldNet(train_input, trainer, dim)
 
     # testing the net
     test_set = np.zeros((testel, dim[0], dim[1]))
@@ -93,8 +100,8 @@ def test2():
 def test3():
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/digital7_digit_data_set/tiff_images_rawcut"
     dim = [25, 16]  # in the form rows * cols
-    testel = 10  # elements for training
-    corruption_val = 10
+    #testel = 5  # elements for training
+    #corruption_val = 10
 
     image_dim = [dim[1], dim[0]]  # changing shape for images
 
@@ -111,7 +118,7 @@ def test3():
         train_input[i] = temp.flatten()
 
     # training the net
-    net = HopfieldNet.HopfieldNet(train_input, "pseudoinv", dim)
+    net = HopfieldNet.HopfieldNet(train_input, trainer, dim)
 
     # testing the net
     test_set = np.zeros((testel, dim[0], dim[1]))
@@ -123,4 +130,14 @@ def test3():
     # Plotting results
     utl.plotter(test_set, result_set)
 
-test3()
+
+def main():
+    if testnumber==1:
+        test1()
+    elif testnumber==2:
+        test2()
+    elif testnumber==3:
+        test3()
+
+if __name__ == "__main__":
+    main()
