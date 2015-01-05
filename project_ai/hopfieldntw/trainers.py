@@ -13,7 +13,7 @@ def hebb_train(train_input, n_patterns, n_units):
     # w1 = np.zeros((n_units, n_units))
     # start = time.time()
     # for l in range(n_patterns):
-    #     for i in range(n_units):
+    # for i in range(n_units):
     #         for j in range(i+1, n_units): # in order to compute only the upper half matrix
     #             w1[i, j] += train_input[l, i] * train_input[l, j]
     #             w1[j, i] = w1[i, j]
@@ -39,7 +39,7 @@ def hebb_train(train_input, n_patterns, n_units):
 
     # 3: hebb rule improved with matrix multiplication
     start = time.time()
-    train_transp = zip(*train_input) # matrix transpose
+    train_transp = zip(*train_input)  # matrix transpose
     w3 = np.dot(train_transp, train_input)
     w3 = w3.astype(float)
     w3 *= 1 / float(n_units)
@@ -51,7 +51,7 @@ def hebb_train(train_input, n_patterns, n_units):
 
     # # Checking issues
     # if np.array_equal(w1,w2) and np.array_equal(w2, w3):
-    #     print("All methods returns the same weight matrix. Weights")
+    #     print("All methods returns the same weight matrix.")
     # else:
     #     print("w1 and w2 ", np.array_equal(w1,w2))
     #     print("w2 and w3 ", np.array_equal(w2,w3))
@@ -59,20 +59,40 @@ def hebb_train(train_input, n_patterns, n_units):
 
     return w3
 
+
 # support function fro pseudo inverse rule
 def q_pseudo_inv(train_input, n_patterns, n_units):
-    q = np.zeros((n_patterns, n_patterns))
 
+    # # Original version with loop
+    # start = time.time()
+    # q1 = np.zeros((n_patterns, n_patterns))
+    # for v in range(n_patterns):
+    #     for u in range(n_patterns):
+    #         for i in range(n_units):
+    #             q1[u][v] += train_input[v][i] * train_input[u][i]
+    # end = time.time()
+    # elapsed = end - start
+    # print("original version elapsed time", elapsed)
+
+    # New version with dot product
+    # start = time.time()
+    q2 = np.zeros((n_patterns, n_patterns))
     for v in range(n_patterns):
         for u in range(n_patterns):
-            # for i in range(n_units):
-            #     q[u][v] += train_input[v][i]*train_input[u][i]
-            q[u][v] = np.dot(train_input[v], train_input[u])
+            q2[u][v] = np.dot(train_input[v], train_input[u])
+    end = time.time()
+    # elapsed = end - start
+    # print("improved version elapsed time", elapsed)
 
-    q *= 1 / float(n_units)
-    q = np.linalg.inv(q) # inverseof the matrix
+    # # Checking issues
+    # if np.array_equal(q1, q2):
+    #     print("Both methods returns the same Q matrix.")
+
+    q2 *= 1 / float(n_units)
+    q = np.linalg.inv(q2)  # inverseof the matrix
 
     return q
+
 
 # uses the pseudo inverse training rule
 def pseudo_inverse_train(train_input, n_patterns, n_units):
@@ -84,12 +104,13 @@ def pseudo_inverse_train(train_input, n_patterns, n_units):
     for v in range(n_patterns):
         for u in range(n_patterns):
             for i in range(n_units):
-                for j in range(i+1, n_units): # in order to compute only the upper half matrix
-                    weights[i, j] += train_input[v, i] * q[v][u] *train_input[u, j]
+                for j in range(i + 1, n_units):  # in order to compute only the upper half matrix
+                    weights[i, j] += train_input[v, i] * q[v][u] * train_input[u, j]
                     weights[j, i] = weights[i, j]
 
     weights *= 1 / float(n_units)
     return weights
+
 
 # support function for storkey rule
 def h_storkey(weights, i_index, j_index, pattern, pattern_idx, n_units):
@@ -97,8 +118,8 @@ def h_storkey(weights, i_index, j_index, pattern, pattern_idx, n_units):
 
     # start = time.time()
     for k in range(n_units):
-        if k!=i_index and k!=j_index:
-            h += weights[i_index][k]*pattern[pattern_idx][k]
+        if k != i_index and k != j_index:
+            h += weights[i_index][k] * pattern[pattern_idx][k]
     end = time.time()
     # elapsed1 = end - start
 
@@ -112,21 +133,22 @@ def h_storkey(weights, i_index, j_index, pattern, pattern_idx, n_units):
     # elapsed2 = end - start
     #
     # if h==h2:
-    #     print("Results are the same")
+    # print("Results are the same")
     # else:
     #     print("RESULTS ARE DIFFERENT!! h1: ", h ," h2: ", h2)
     # print("First perf is ", elapsed1," while dot is ", elapsed2)
 
     return h
 
-#  uses the storkey rule
+
+# uses the storkey rule
 def storkey_train(train_input, n_patterns, n_units):
     weights = np.zeros((n_units, n_units))
 
     start = time.time()
     for l in range(n_patterns):
         for i in range(n_units):
-            for j in range(i+1, n_units): # in order to compute only the upper half matrix
+            for j in range(i + 1, n_units):  # in order to compute only the upper half matrix
                 temp = train_input[l, i] * train_input[l, j]
                 temp -= train_input[l, i] * h_storkey(weights, j, i, train_input, l, n_units)
                 temp -= h_storkey(weights, i, j, train_input, l, n_units) * train_input[l, j]

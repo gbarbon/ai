@@ -7,10 +7,10 @@ import imageManager as iM
 
 # Config variables/constant
 testnumber = 2
-testel = 8 # elements to test/train
-corruption_val = 5
+testel = 10 # elements to test/train
+corruption_val = 20
 trainers = ["hebbian","pseudoinv","storkey"]
-trainer = trainers[0]
+trainer = trainers[1]
 all_trainer = False # True for all trainers or False for only one
 
 

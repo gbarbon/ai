@@ -203,7 +203,7 @@ where $h_{ij}$ is a form of local field at neuron $i$:
 
 \subsection{Learning Algorithms}
 
-In the pseudo inverse implementation the $Q$ matrix is already returned as an inverse, in order to save computational time
+In the pseudo inverse implementation the $Q$ matrix is already returned as an inverse, in order to save computational time. The original algorithm that iterated the units for the sum computation has been substituted with a dot product operator thanks to numpy library.
 
 Storkey learning rule. The sub function that compute $c$ has not been optimized, because the result with the dot product where too bad with respect to the normal one. As for the core Storkey formula, it has been implemented using loops. Improvement where not possible, because dot product could not be exploited.
 
