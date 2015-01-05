@@ -5,8 +5,21 @@ D.~O. Hebb.
 \newblock {\em The Organization of Behavior}.
 \newblock Wiley, New York, 1949.
 
+\bibitem{personnazcoll}
+I.~G. L.~Personnaz and G.~Dreyfus.
+\newblock Collective computational properties of neural networks: New learning
+  mechanisms.
+\newblock {\em Phys. Rev. A}, 1986.
+
 \bibitem{pelillo}
 M.~Pelillo.
 \newblock Artificial intelligence course, 2014.
+
+\bibitem{Storkey97increasingthe}
+A.~Storkey.
+\newblock Increasing the capacity of a hopfield network without sacrificing
+  functionality.
+\newblock In {\em ICANN97: Lecture Notes in Computer Science 1327}, pages
+  451--456. Springer-Verlag, 1997.
 
 \end{thebibliography}

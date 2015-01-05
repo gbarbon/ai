@@ -145,7 +145,16 @@ $\Delta E = E(t+1)-E(t)\leq 0$
 with the equivalence when the system reach a stationary point.
 \end{theorem}
 
-\subsection{Hebb's rule}
+\subsection{Learning Algorithms}
+Learning rule have some characteristics:
+\begin{itemize}
+\item\textbf{locality:} a rule can be local, this means that the update of a given weight depends only on informations available to neurons on either side of the connection. Locality provides natural parallelism that is one of the component that makes an Hopfield network a truly parallel machine.
+\item\textbf{incremental:} an incremental rule modifies the old network configuration to memorize a new pattern without needing to refer to any of the previous learnt patterns. This behaviour allows an Hopfield net to be adaptive, thus more suitable for real time situations and changing environments
+\item\textbf{immediate:} an immediate update of the network allows faster learning
+\item\textbf{capacity:} it measure how many patterns can be stored in the network of a given size (number of neurons). Moreover higher capacity allows faster processing times, because the update time is at least proportional to the number of neurons. 
+\end{itemize}
+
+\subsubsection{Hebb's rule}
 In contrast with computer's byte-addressable memory, that adopt a precise memory address to locate information, the human brain utilize content-addressable memory, that uses the content of data to locate information. The Hebb rule has been introduced to describe such behaviour and states that the weight between two neurons increases if the two neurons activate simultaneously. In detail, the Hebb postulate says that: 
 \begin{center}
 \emph{Let us assume that the persistence or repetition of a reverberatory activity (or "trace") tends to induce lasting cellular changes that add to its stability. [\ldots] When an axon of cell A is near enough to excite a cell B and repeatedly or persistently takes part in firing it, some growth process or metabolic change takes place in one or both cells such that A's efficiency, as one of the cells firing B, is increased. }\cite{Hebb49}
@@ -166,16 +175,20 @@ Anyway, there are some problems in the use of Hopfield network as content-addres
 \item patterns are not recalled with the same emphasis
 \end{itemize}
 
-\subsection{Pseudo-Inverse Rule}
+\subsubsection{Pseudo-Inverse Rule}
 Pseudo inverse rule try to map a memory to itself before thresholding. In this way the problem can be treated as a real value regression problem, the solution of which is given by the pseudo-inverse. We can consider the Hebb rule as a special case of pseudo-inverse rule for orthogonal training vectors. However, in this rule we have no local computation and no incremental updates, because it involves the calculation of an inverse.
 \begin{displaymath}
-	w_{ij} = \frac{1}{N} \sum_{\substack{u=1\\v=1    }}^m x_i^u (Q^-1)^{uv} x_j^v
+	w_{ij} = \frac{1}{N} \sum_{\substack{u=1\\v=1    }}^m x_i^u (Q^{-1})^{uv} x_j^v
 \end{displaymath}
 where $m$ is the total number of patterns and $q$ is:
 \begin{displaymath}
 	q_{uv} = \frac{1}{N} \sum_{i=1}^N x_i^u x_j^v
 \end{displaymath}
-This rule, also called projection learning rule, allows to improve the retrieval capability of the net with respect to Hebb rule, bringing the maximum number of pattern to $0.5N$.
+This rule, also called projection learning rule \cite{personnazcoll}, allows to improve the retrieval capability of the net with respect to Hebb rule, bringing the maximum number of pattern to $0.5N$.
+
+\subsubsection{Storkey Rule \cite{Storkey97increasingthe}}
+Even if the pseudo-inverse rule performs better than the Hebbian one, it is never incremental and local only if not immediate. Storkey propose an algorithm to increase the capacity of the Hebbian rule without losing locality and incrementality.
+
 
 %----------------------------------------------------------------------------------------
 %	x. Conclusions
