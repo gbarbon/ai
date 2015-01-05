@@ -5,14 +5,18 @@ import HopfieldNet
 import utils as utl
 import imageManager as iM
 
+# Config variables/constant
 testnumber = 2
-testel = 10 # elements to test/train
+testel = 8 # elements to test/train
 corruption_val = 5
 trainers = ["hebbian","pseudoinv","storkey"]
-trainer = trainers[2]
+trainer = trainers[0]
+all_trainer = False # True for all trainers or False for only one
 
 
-def test1():
+def test1(trainer_type):
+    #corruption_val = 5
+
     # Create the training patterns
     a_pattern = np.array([[0, 0, 0, 1, 0, 0, 0],
                           [0, 0, 1, 0, 1, 0, 0],
@@ -45,12 +49,12 @@ def test1():
     train_input = np.array([a_pattern.flatten(), b_pattern.flatten(), c_pattern.flatten()])
 
     #hebbian training
-    net = HopfieldNet.HopfieldNet(train_input, trainer, [7, 7])
+    net = HopfieldNet.HopfieldNet(train_input, trainer_type, [7, 7])
 
     # creating test set
-    a_test = utl.corrupter(a_pattern, 5)
-    b_test = utl.corrupter(b_pattern, 5)
-    c_test = utl.corrupter(c_pattern, 5)
+    a_test = utl.corrupter(a_pattern, corruption_val)
+    b_test = utl.corrupter(b_pattern, corruption_val)
+    c_test = utl.corrupter(c_pattern, corruption_val)
 
     # training and testing the net
     a_result = net.test(a_test)
@@ -63,7 +67,7 @@ def test1():
     utl.plotter(test_set, result_set)
 
 
-def test2():
+def test2(trainer_type):
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/courier_digits_data_set/tiff_images_swidth"
     dim = [14, 9]  # in the form rows * cols
     #testel = 8  # elements for training
@@ -85,7 +89,7 @@ def test2():
         train_input[i] = temp.flatten()
 
     # training the net
-    net = HopfieldNet.HopfieldNet(train_input, trainer, dim)
+    net = HopfieldNet.HopfieldNet(train_input, trainer_type, dim)
 
     # testing the net
     test_set = np.zeros((testel, dim[0], dim[1]))
@@ -97,7 +101,7 @@ def test2():
     # Plotting results
     utl.plotter(test_set, result_set)
 
-def test3():
+def test3(trainer_type):
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/digital7_digit_data_set/tiff_images_rawcut"
     dim = [25, 16]  # in the form rows * cols
     #testel = 5  # elements for training
@@ -118,7 +122,7 @@ def test3():
         train_input[i] = temp.flatten()
 
     # training the net
-    net = HopfieldNet.HopfieldNet(train_input, trainer, dim)
+    net = HopfieldNet.HopfieldNet(train_input, trainer_type, dim)
 
     # testing the net
     test_set = np.zeros((testel, dim[0], dim[1]))
@@ -130,14 +134,20 @@ def test3():
     # Plotting results
     utl.plotter(test_set, result_set)
 
-
 def main():
-    if testnumber==1:
-        test1()
-    elif testnumber==2:
-        test2()
-    elif testnumber==3:
-        test3()
+
+    if all_trainer:
+        iterator = trainers
+    else:
+        iterator = [trainer]
+    for i in range(len(iterator)):
+        print("Now trainer is: ", iterator[i])
+        if testnumber == 1:
+            test1(iterator[i])
+        elif testnumber == 2:
+            test2(iterator[i])
+        elif testnumber == 3:
+            test3(iterator[i])
 
 if __name__ == "__main__":
     main()
