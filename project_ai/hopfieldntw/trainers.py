@@ -14,14 +14,13 @@ def hebb_train(train_input, n_patterns, n_units):
     # start = time.time()
     # for l in range(n_patterns):
     # for i in range(n_units):
-    #         for j in range(i+1, n_units): # in order to compute only the upper half matrix
-    #             w1[i, j] += train_input[l, i] * train_input[l, j]
+    # for j in range(i+1, n_units): # in order to compute only the upper half matrix
+    # w1[i, j] += train_input[l, i] * train_input[l, j]
     #             w1[j, i] = w1[i, j]
     # w1 *= 1 / float(n_units)
     # end = time.time()
     # elapsed = end - start
     # print("w1 elapsed time", elapsed)
-
 
     # # 2: hebb rule improved substituting the pattern loop with dot products
     # start = time.time()
@@ -36,10 +35,10 @@ def hebb_train(train_input, n_patterns, n_units):
     # elapsed = end - start
     # print("w2 elapsed time", elapsed)
 
-
     # 3: hebb rule improved with matrix multiplication
     start = time.time()
     train_transp = zip(*train_input)  # matrix transpose
+    #w3 = np.zeros((n_units, n_units))
     w3 = np.dot(train_transp, train_input)
     w3 = w3.astype(float)
     w3 *= 1 / float(n_units)
@@ -62,13 +61,12 @@ def hebb_train(train_input, n_patterns, n_units):
 
 # support function fro pseudo inverse rule
 def q_pseudo_inv(train_input, n_patterns, n_units):
-
     # # Original version with loop
     # start = time.time()
     # q1 = np.zeros((n_patterns, n_patterns))
     # for v in range(n_patterns):
-    #     for u in range(n_patterns):
-    #         for i in range(n_units):
+    # for u in range(n_patterns):
+    # for i in range(n_units):
     #             q1[u][v] += train_input[v][i] * train_input[u][i]
     # end = time.time()
     # elapsed = end - start
@@ -80,7 +78,7 @@ def q_pseudo_inv(train_input, n_patterns, n_units):
     for v in range(n_patterns):
         for u in range(n_patterns):
             q2[u][v] = np.dot(train_input[v], train_input[u])
-    end = time.time()
+    # end = time.time()
     # elapsed = end - start
     # print("improved version elapsed time", elapsed)
 
@@ -98,6 +96,7 @@ def q_pseudo_inv(train_input, n_patterns, n_units):
 def pseudo_inverse_train(train_input, n_patterns, n_units):
     weights = np.zeros((n_units, n_units))
 
+    start = time.time()
     # notice: the matrix is returned already inverse
     q = q_pseudo_inv(train_input, n_patterns, n_units)
 
@@ -107,8 +106,12 @@ def pseudo_inverse_train(train_input, n_patterns, n_units):
                 for j in range(i + 1, n_units):  # in order to compute only the upper half matrix
                     weights[i, j] += train_input[v, i] * q[v][u] * train_input[u, j]
                     weights[j, i] = weights[i, j]
-
     weights *= 1 / float(n_units)
+
+    end = time.time()
+    elapsed = end - start
+    print("Pseudo inverse elapsed time", elapsed)
+
     return weights
 
 
@@ -120,7 +123,7 @@ def h_storkey(weights, i_index, j_index, pattern, pattern_idx, n_units):
     for k in range(n_units):
         if k != i_index and k != j_index:
             h += weights[i_index][k] * pattern[pattern_idx][k]
-    end = time.time()
+    # end = time.time()
     # elapsed1 = end - start
 
     # start = time.time()
@@ -135,7 +138,7 @@ def h_storkey(weights, i_index, j_index, pattern, pattern_idx, n_units):
     # if h==h2:
     # print("Results are the same")
     # else:
-    #     print("RESULTS ARE DIFFERENT!! h1: ", h ," h2: ", h2)
+    # print("RESULTS ARE DIFFERENT!! h1: ", h ," h2: ", h2)
     # print("First perf is ", elapsed1," while dot is ", elapsed2)
 
     return h
@@ -155,9 +158,31 @@ def storkey_train(train_input, n_patterns, n_units):
                 temp *= 1 / float(n_units)
                 weights[i, j] += temp
                 weights[j, i] = weights[i, j]
-        print(l, " iteration accomplished")
+        print("Storkey rule iteration: ", l)
     end = time.time()
     elapsed = end - start
     print("Storkey algorithm execution time: ", elapsed)
+
+    return weights
+
+
+# sanger rule applied to hopfield networks, probably not working
+def sanger_train(train_input, n_patterns, n_units):
+    weights = np.zeros((n_units, n_units))
+
+    start = time.time()
+    for l in range(n_patterns):
+        for i in range(n_units):
+            for j in range(i + 1, n_units):
+                temp = 0
+                for k in range(j):
+                    temp += weights[i][k] * train_input[l][k]
+                weights[i][j] = train_input[l][j] * train_input[l][i] - train_input[l][j] * temp
+                weights[i][j] *= 1 / float(n_units)
+                weights[j][i] = weights[i][j]
+
+    end = time.time()
+    elapsed = end - start
+    print("Sanger algorithm execution time: ", elapsed)
 
     return weights
