@@ -7,15 +7,17 @@ import imageManager as iM
 
 # Config variables/constant
 testnumber = 2
-testel = 6  # elements to test/train
+testel = 10  # elements to test
+trainel = 10  # elements to train
 corr_ratio = 0  # corruption ratio
 erase_ratio = 0
 trainers = ["hebbian", "pseudoinv", "storkey"]
 # trainers = ["hebbian","pseudoinv","storkey","sanger"]
 trainer = trainers[0]
-trainername = trainer
 filetype = "png"
-all_trainer = False  # True for all trainers or False for only one
+all_trainer = True  # True for all trainers or False for only one
+plotbool = False
+savebool = True
 
 
 def test1(trainer_type):
@@ -73,8 +75,8 @@ def test1(trainer_type):
 
 def test2(trainer_type):
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/courier_digits_data_set/tiff_images_swidth"
-    results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_2" + "/" + trainername
-    filename = results_dir + "/" + str(testel) + "_" + trainername + "." + filetype
+    results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_2" + "/" + trainer_type
+    filename = results_dir + "/" + "tr" + str(trainel) + "_ts"+ str(testel)  + "_c" + str(corr_ratio) + "_e" + str(erase_ratio) + "_" + trainer_type + "." + filetype
     dim = [14, 9]  # in the form rows * cols
     # testel = 8  # elements for training
     #corruption_val = 5
@@ -85,14 +87,14 @@ def test2(trainer_type):
     # Loading images data set
     temp_train = iM.collectimages(image_dim, images_dir)
 
-    train_input = np.zeros((testel, dim[0] * dim[1]))
-    for i in range(testel):
-        train_input[i] = temp_train[i]
-
     # image conversion to 1 and -1 for Hopfield net
-    for i in range(train_input.shape[0]):
-        temp = utl.image_converter(train_input[i].reshape(dim))
-        train_input[i] = temp.flatten()
+    for i in range(temp_train.shape[0]):
+        temp = utl.image_converter(temp_train[i].reshape(dim))
+        temp_train[i] = temp.flatten()
+
+    train_input = np.zeros((trainel, dim[0] * dim[1]))
+    for i in range(trainel):
+        train_input[i] = temp_train[i]
 
     # training the net
     net = HopfieldNet.HopfieldNet(train_input, trainer_type, dim)
@@ -108,13 +110,17 @@ def test2(trainer_type):
             test_set[i] = utl.image_eraser(test_set[i], erase_ratio)
         result_set[i] = net.test(test_set[i])
 
-    # Plotting results
-    utl.plotter(test_set, result_set)
-    #utl.image_save(test_set, result_set, filename)
+    # Plotting and saving results
+    if (plotbool):
+        utl.plotter(test_set, result_set)
+    if (savebool):
+        utl.image_save(test_set, result_set, filename)
 
 
 def test3(trainer_type):
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/digital7_digit_data_set/tiff_images_rawcut"
+    results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_3" + "/" + trainer_type
+    filename = results_dir + "/" + "tr" + str(trainel) + "_ts"+ str(testel)  + "_c" + str(corr_ratio) + "_e" + str(erase_ratio) + "_" + trainer_type + "." + filetype
     dim = [25, 16]  # in the form rows * cols
     # testel = 5  # elements for training
     #corruption_val = 10
@@ -124,14 +130,14 @@ def test3(trainer_type):
     # Loading images data set
     temp_train = iM.collectimages(image_dim, images_dir)
 
-    train_input = np.zeros((testel, dim[0] * dim[1]))
-    for i in range(testel):
-        train_input[i] = temp_train[i]
-
     # image conversion to 1 and -1 for Hopfield net
-    for i in range(train_input.shape[0]):
-        temp = utl.image_converter(train_input[i].reshape(dim))
-        train_input[i] = temp.flatten()
+    for i in range(temp_train.shape[0]):
+        temp = utl.image_converter(temp_train[i].reshape(dim))
+        temp_train[i] = temp.flatten()
+
+    train_input = np.zeros((trainel, dim[0] * dim[1]))
+    for i in range(trainel):
+        train_input[i] = temp_train[i]
 
     # training the net
     net = HopfieldNet.HopfieldNet(train_input, trainer_type, dim)
@@ -147,8 +153,11 @@ def test3(trainer_type):
             test_set[i] = utl.image_eraser(test_set[i], erase_ratio)
         result_set[i] = net.test(test_set[i])
 
-    # Plotting results
-    utl.plotter(test_set, result_set)
+    # Plotting and saving results
+    if (plotbool):
+        utl.plotter(test_set, result_set)
+    if (savebool):
+        utl.image_save(test_set, result_set, filename)
 
 
 def main():
@@ -157,7 +166,6 @@ def main():
     else:
         iterator = [trainer]
     for i in range(len(iterator)):
-        trainername = iterator[i]
         print("Now trainer is: ", iterator[i])
         if testnumber == 1:
             test1(iterator[i])
