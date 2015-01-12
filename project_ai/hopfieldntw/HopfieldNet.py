@@ -21,7 +21,8 @@ class HopfieldNet:
 
         # net training
         if trainer_type == "hebbian":
-            self.weights = tr.hebb_train(train_input, n_patterns, self.n_units)
+            # self.weights = tr.hebb_train(train_input, n_patterns, self.n_units)
+            self.weights = tr.hebb_train(train_input, self.n_units)
         elif trainer_type == "pseudoinv":
             self.weights = tr.pseudo_inverse_train(train_input, n_patterns, self.n_units)
         elif trainer_type == "storkey":

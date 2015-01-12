@@ -5,7 +5,8 @@ import time
 
 
 # train intput is in the form of a vector
-def hebb_train(train_input, n_patterns, n_units):
+# def hebb_train(train_input, n_patterns, n_units):
+def hebb_train(train_input, n_units):
     # weights matrix init to zeros
 
     # # 1: original hebb algorithm

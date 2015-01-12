@@ -7,12 +7,14 @@ import imageManager as iM
 
 # Config variables/constant
 testnumber = 2
-testel = 10  # elements to test/train
+testel = 6  # elements to test/train
 corr_ratio = 0  # corruption ratio
 erase_ratio = 0
 trainers = ["hebbian", "pseudoinv", "storkey"]
 # trainers = ["hebbian","pseudoinv","storkey","sanger"]
-trainer = trainers[1]
+trainer = trainers[0]
+trainername = trainer
+filetype = "png"
 all_trainer = False  # True for all trainers or False for only one
 
 
@@ -71,6 +73,8 @@ def test1(trainer_type):
 
 def test2(trainer_type):
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/courier_digits_data_set/tiff_images_swidth"
+    results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_2" + "/" + trainername
+    filename = results_dir + "/" + str(testel) + "_" + trainername + "." + filetype
     dim = [14, 9]  # in the form rows * cols
     # testel = 8  # elements for training
     #corruption_val = 5
@@ -97,7 +101,7 @@ def test2(trainer_type):
     test_set = np.zeros((testel, dim[0], dim[1]))
     result_set = np.zeros((testel, dim[0], dim[1]))
     for i in range(testel):
-        test_set[i] = train_input[i].reshape(dim)
+        test_set[i] = temp_train[i].reshape(dim)
         if corr_ratio != 0:
             test_set[i] = utl.corrupter(test_set[i], corr_ratio)
         if erase_ratio != 0:
@@ -106,6 +110,7 @@ def test2(trainer_type):
 
     # Plotting results
     utl.plotter(test_set, result_set)
+    #utl.image_save(test_set, result_set, filename)
 
 
 def test3(trainer_type):
@@ -152,6 +157,7 @@ def main():
     else:
         iterator = [trainer]
     for i in range(len(iterator)):
+        trainername = iterator[i]
         print("Now trainer is: ", iterator[i])
         if testnumber == 1:
             test1(iterator[i])

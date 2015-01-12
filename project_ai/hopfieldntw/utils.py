@@ -48,11 +48,33 @@ def image_eraser(input_image, erase_ratio):
 def plotter(test_set, result_set):
     ntest = len(test_set)
     k = 1
+    fig=plt.figure()
     for i in range(ntest):
-        plt.subplot(ntest, 2, k)
-        plt.imshow(test_set[i], interpolation="nearest")
+        tmp = fig.add_subplot(ntest, 2, k)
+        tmp.imshow(test_set[i], interpolation="nearest")
         k += 1
-        plt.subplot(ntest, 2, k)
-        plt.imshow(result_set[i], interpolation="nearest")
+        tmp = fig.add_subplot(ntest, 2, k)
+        tmp.imshow(result_set[i], interpolation="nearest")
         k += 1
+    title = 'Test set                                          Results'
+    fig.suptitle(title, fontsize=16)
     plt.show()
+
+
+# Save image
+def image_save(test_set, result_set, filename):
+    ntest = len(test_set)
+    k = 1
+    fig=plt.figure()
+    for i in range(ntest):
+        tmp = fig.add_subplot(ntest, 2, k)
+        tmp.imshow(test_set[i], interpolation="nearest")
+        k += 1
+        plt.axis('off')
+        tmp = fig.add_subplot(ntest, 2, k)
+        tmp.imshow(result_set[i], interpolation="nearest")
+        k += 1
+        plt.axis('off')
+    title = 'Test set                                          Results'
+    fig.suptitle(title, fontsize=16)
+    fig.savefig(filename)
