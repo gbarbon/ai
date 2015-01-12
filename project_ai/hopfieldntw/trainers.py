@@ -51,6 +51,7 @@ def hebb_train(train_input, n_patterns, n_units):
     # # Checking issues
     # if np.array_equal(w1,w2) and np.array_equal(w2, w3):
     #     print("All methods returns the same weight matrix.")
+
     # else:
     #     print("w1 and w2 ", np.array_equal(w1,w2))
     #     print("w2 and w3 ", np.array_equal(w2,w3))
