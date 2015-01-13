@@ -69,7 +69,7 @@ class HopfieldNet:
 
         k = 0
         while k < 10:
-            randomrange = range(len(pattern))
+            randomrange = list(range(len(pattern)))
             rd.shuffle(randomrange)
             for i in randomrange:
                 pattern[i] = self.single_unit_updater(i, pattern)

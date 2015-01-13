@@ -20,7 +20,7 @@ def corrupter(input_image, corr_ratio):
     total_dim = dim_col*dim_row
     corrupted_image = cp.copy(input_image).flatten()
 
-    points_to_corr = (total_dim*corr_ratio)/100
+    points_to_corr = int((total_dim*corr_ratio)/100)
     for i in range(points_to_corr):
         corr_idx = rnd.randint(0, (dim_row*dim_col-1))
         corrupted_image[corr_idx] *= -1
@@ -35,7 +35,7 @@ def image_eraser(input_image, erase_ratio):
     dim_col = input_image.shape[1]
     erased_img = cp.copy(input_image).flatten()
 
-    rows_to_erase = (dim_row*erase_ratio)/100
+    rows_to_erase = int((dim_row*erase_ratio)/100)
     for i in range(dim_col*rows_to_erase):
         erased_img[i] = 1
 
@@ -51,10 +51,10 @@ def plotter(test_set, result_set):
     fig=plt.figure()
     for i in range(ntest):
         tmp = fig.add_subplot(ntest, 2, k)
-        tmp.imshow(test_set[i], interpolation="nearest")
+        tmp.imshow(test_set[i], "summer",interpolation="nearest")
         k += 1
         tmp = fig.add_subplot(ntest, 2, k)
-        tmp.imshow(result_set[i], interpolation="nearest")
+        tmp.imshow(result_set[i], "winter", interpolation="nearest")
         k += 1
     title = 'Test set                                          Results'
     fig.suptitle(title, fontsize=16)
@@ -68,13 +68,14 @@ def image_save(test_set, result_set, filename):
     fig=plt.figure()
     for i in range(ntest):
         tmp = fig.add_subplot(ntest, 2, k)
-        tmp.imshow(test_set[i], interpolation="nearest")
+        tmp.imshow(test_set[i], "summer", interpolation="nearest")
         k += 1
         plt.axis('off')
         tmp = fig.add_subplot(ntest, 2, k)
-        tmp.imshow(result_set[i], interpolation="nearest")
+        tmp.imshow(result_set[i], "winter", interpolation="nearest")
         k += 1
         plt.axis('off')
     title = 'Test set                                          Results'
     fig.suptitle(title, fontsize=16)
-    fig.savefig(filename)
+    fig.set_tight_layout(True)
+    fig.savefig(filename, bbox_inches='tight')

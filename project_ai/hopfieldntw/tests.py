@@ -7,16 +7,16 @@ import imageManager as iM
 
 # Config variables/constant
 testnumber = 2
-testel = 10  # elements to test
-trainel = 10  # elements to train
-corr_ratio = 0  # corruption ratio
-erase_ratio = 0
+testel = 8  # elements to test
+trainel = 8  # elements to train
+corr_ratio = 20  # corruption ratio
+erase_ratio = 30
 trainers = ["hebbian", "pseudoinv", "storkey"]
 # trainers = ["hebbian","pseudoinv","storkey","sanger"]
-trainer = trainers[0]
+trainer = trainers[1]
 filetype = "png"
-all_trainer = True  # True for all trainers or False for only one
-plotbool = False
+all_trainer = False  # True for all trainers or False for only one
+plotbool = True
 savebool = True
 
 
@@ -73,7 +73,7 @@ def test1(trainer_type):
     utl.plotter(test_set, result_set)
 
 
-def test2(trainer_type):
+def test2(trainer_type, testel, trainel):
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/courier_digits_data_set/tiff_images_swidth"
     results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_2" + "/" + trainer_type
     filename = results_dir + "/" + "tr" + str(trainel) + "_ts"+ str(testel)  + "_c" + str(corr_ratio) + "_e" + str(erase_ratio) + "_" + trainer_type + "." + filetype
@@ -117,7 +117,7 @@ def test2(trainer_type):
         utl.image_save(test_set, result_set, filename)
 
 
-def test3(trainer_type):
+def test3(trainer_type, testel, trainel):
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/digital7_digit_data_set/tiff_images_rawcut"
     results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_3" + "/" + trainer_type
     filename = results_dir + "/" + "tr" + str(trainel) + "_ts"+ str(testel)  + "_c" + str(corr_ratio) + "_e" + str(erase_ratio) + "_" + trainer_type + "." + filetype
@@ -170,9 +170,17 @@ def main():
         if testnumber == 1:
             test1(iterator[i])
         elif testnumber == 2:
-            test2(iterator[i])
+            test2(iterator[i], testel, trainel)
         elif testnumber == 3:
             test3(iterator[i])
+
+def total2():
+    test_couples = [[2,2],[2,3],[5,5],[5,10],[8,8],[10,10]]
+    for i in range(len(trainers)):
+        for j in range(len(test_couples)):
+            testel = test_couples[j][0]
+            trainel = test_couples[j][1]
+            test2(trainers[i], testel, trainel)
 
 
 if __name__ == "__main__":
