@@ -44,38 +44,47 @@ def image_eraser(input_image, erase_ratio):
     return erased_img
 
 
-# Plot the results
-def plotter(test_set, result_set):
+# Plot and/or save the results
+def plotter(test_set, result_set, filename, plotbool, savebool):
     ntest = len(test_set)
+    tickslabels_array_big = ([-0.5, 2.5, 5.5, 8.5], ['0', '3', '6', '9'], [-0.5, 2.5, 5.5, 8.5, 11.5], ['0', '3', '6', '9', '12'])
+    tickslabels_array_small = ([-0.5, 4.5, 8.5], ['0', '5', '9'], [-0.5, 5.5, 11.5], ['0', '6', '12'])
+
     k = 1
+    if (ntest>5):
+        tickslabels_array = tickslabels_array_small
+        lsize = 6
+    else:
+        tickslabels_array = tickslabels_array_big
+        lsize = 8
     fig=plt.figure()
     for i in range(ntest):
+
         tmp = fig.add_subplot(ntest, 2, k)
         tmp.imshow(test_set[i], "summer",interpolation="nearest")
+
+        tmp.tick_params(labelsize=lsize)
+        tmp.set_xticks(tickslabels_array[0])
+        tmp.set_xticklabels(tickslabels_array[1])
+        tmp.set_yticks(tickslabels_array[2])
+        tmp.set_yticklabels(tickslabels_array[3])
+        if k==1:
+            #tmp.set_title("Test set")
+            tmp.text(.5, 1.2, 'Test set', horizontalalignment='center', transform=tmp.transAxes, fontsize=16)
         k += 1
+
         tmp = fig.add_subplot(ntest, 2, k)
         tmp.imshow(result_set[i], "winter", interpolation="nearest")
+        tmp.tick_params(labelsize=lsize)
+        tmp.set_xticks(tickslabels_array[0])
+        tmp.set_xticklabels(tickslabels_array[1])
+        tmp.set_yticks(tickslabels_array[2])
+        tmp.set_yticklabels(tickslabels_array[3])
+        if k==2:
+            tmp.text(.5, 1.2, 'Results', horizontalalignment='center', transform=tmp.transAxes, fontsize=16)
         k += 1
-    title = 'Test set                                          Results'
-    fig.suptitle(title, fontsize=16)
-    plt.show()
-
-
-# Save image
-def image_save(test_set, result_set, filename):
-    ntest = len(test_set)
-    k = 1
-    fig=plt.figure()
-    for i in range(ntest):
-        tmp = fig.add_subplot(ntest, 2, k)
-        tmp.imshow(test_set[i], "summer", interpolation="nearest")
-        k += 1
-        plt.axis('off')
-        tmp = fig.add_subplot(ntest, 2, k)
-        tmp.imshow(result_set[i], "winter", interpolation="nearest")
-        k += 1
-        plt.axis('off')
-    title = 'Test set                                          Results'
-    fig.suptitle(title, fontsize=16)
-    fig.set_tight_layout(True)
-    fig.savefig(filename, bbox_inches='tight')
+    fig.subplots_adjust(hspace=.7, wspace=0.01)
+    if plotbool:
+        plt.show()
+    if savebool:
+        fig.savefig(filename, bbox_inches='tight')

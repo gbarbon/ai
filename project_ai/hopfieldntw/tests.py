@@ -7,8 +7,8 @@ import imageManager as iM
 
 # Config variables/constant
 testnumber = 2
-testel = 8  # elements to test
-trainel = 8  # elements to train
+testel = 10  # elements to test
+trainel = 10  # elements to train
 corr_ratio = 20  # corruption ratio
 erase_ratio = 30
 trainers = ["hebbian", "pseudoinv", "storkey"]
@@ -22,6 +22,7 @@ savebool = True
 
 def test1(trainer_type):
     # corruption_val = 5
+    results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_1"
 
     # Create the training patterns
     a_pattern = np.array([[0, 0, 0, 1, 0, 0, 0],
@@ -70,7 +71,7 @@ def test1(trainer_type):
     #Show the results
     test_set = np.array([a_test, b_test, c_test])
     result_set = np.array([a_result, b_result, c_result])
-    utl.plotter(test_set, result_set)
+    utl.plotter(test_set, result_set, results_dir, plotbool, savebool)
 
 
 def test2(trainer_type, testel, trainel):
@@ -111,10 +112,7 @@ def test2(trainer_type, testel, trainel):
         result_set[i] = net.test(test_set[i])
 
     # Plotting and saving results
-    if (plotbool):
-        utl.plotter(test_set, result_set)
-    if (savebool):
-        utl.image_save(test_set, result_set, filename)
+    utl.plotter(test_set, result_set, filename, plotbool, savebool)
 
 
 def test3(trainer_type, testel, trainel):
@@ -154,10 +152,7 @@ def test3(trainer_type, testel, trainel):
         result_set[i] = net.test(test_set[i])
 
     # Plotting and saving results
-    if (plotbool):
-        utl.plotter(test_set, result_set)
-    if (savebool):
-        utl.image_save(test_set, result_set, filename)
+    utl.plotter(test_set, result_set, filename, plotbool, savebool)
 
 
 def main():
