@@ -203,35 +203,40 @@ where $h_{ij}$ is a form of local field at neuron $i$:
 The Hopfield network is implemented with the HopfieldNet class. Thus, a network will be an instance of this class. When an HopfieldNet object is created, the net is immediately initialized with the given input and the given training algorithm. The class is provided with a test function that performs the test of the whole net with the given test set. This function uses a neuron activation function, called $single_unit_updater$, that operates on a single unit. The behaviour of the net is governed by the energy function, called by the test function at each iteration. Units to be updated are chosen randomly; when every units has been updated, the energy is computed and compared to the one obtained at time $t-1$. When the difference between the two is zero, the update phase is stopped and result is returned to the user.
 
 \subsection{Learning Algorithms}
+
 \subsubsection{Hebbian rule}
 The Hebbian rule has been implemented in three different ways. The first one is the original algorithm, with three nested loops: the outer one to iterate over training patterns, while the internal one iterate over the elements of the matrix. This solution, while perfectly follows the algorithm, does not performs wells, so it has been decided to exploits the strengths of the python language to improve performances. Following this idea, solution two uses the \emph{dot product} function provided by python in order to compute the product between points of a pattern and the sum of the corresponding results for each point between different patterns, thus avoiding the outer loop. This advantage is better exploited in solution three (the one adopted in the definitive version), where also the two loops that iterates over elements are removed. This solution perform directly the dot products between the transposed input patterns matrix and the normal one. Anyway, even if solution three is the best one, it has been discovered that solution one and two are the best choice for very small images.
+
 \subsubsection{Pseudo-inverse rule}
 The pseudo-inverse rule has not been improved with predefined python functions, because of the complexity of the formula. Thus, the pseudo inverse training algorithm is implemented with four nested loops: the external ones iterate over training patterns while the internal ones iterate over single units for the weight computation. Moreover, this algorithm exploits a separate function for the computation of the $Q$ matrix. The original algorithm that iterated the units for the sum computation has been substituted with a dot product operator thanks to numpy library. Finally, in the pseudo inverse implementation the $Q$ matrix is already returned as an inverse, in order to save computational time. 
+
 \subsubsection{Storkey's rule}
 The core Storkey formula has been implemented using loops. Improvement where not possible, because dot product could not be exploited. As for the pseudo-inverse alg. also this one uses an external function, the $h_storkey$ function, that computes $h$. Also this function has not been optimized, even if this was possible, because the result with the dot product where too bad with respect to the normal one.\\ \\
 \noindent Notice that both pseudo inverse and Storkey avoid the computation of half of the matrix, by taking advantage of the fact that the matrix is symmetric.
 
 \subsection{Data set}
-The training data set 
+These section describes the dataset used in the project. Each dataset has been used for both training and testing phases, with the exception of the Semeion, which has been used only for testing.
+\begin{itemize}
+\item\textbf{Courier Font Digits} This dataset has been created for this project. It is composed of ten tiff images of $44x70$ pixels in RGB colormap, with white background. Each image contain a different digit written in black Courier font, from 0 to 9. These images come from $100x100$ pixels images, where lateral white spaces have been removed in order to improve algorithm efficiency.
+\item\textbf{Digital 7 Font Digits} Also this dataset has been created for this project. Like the Courier data set, it is composed of ten tiff images, where each one contains a different digit written in black Digital 7 font, from 0 to 9. The image dimension is of $44x70$ pixels. As the Courier data set images are in RGB colormap, with white background. 
+\item\textbf{Semeion Handwritten Data Set} This dataset was created by Tactile Srl and donated in 1994 to Semeion Research Center of Sciences of Communication for machine learning research. The data set  consists of 1593 scanned handwritten digits from around 80 persons, stretched in a rectangular box 16x16 in a gray scale of 256 values. Then each pixel of each image was scaled into a bolean (1/0) value using a fixed threshold. Each person wrote on a paper all the digits from 0 to 9, twice (the first time in the normal way while the second one in a fast way)\cite{semeion}.
+\end{itemize}
 
-As for testing, 
+\section{Testing the net}
+Importance of the training images: images that are very different between them performs better.
 
+Increase of the number of units (and thus image dimension) does not affect results.
 \subsubsection{Corruption function}
 
 \subsubsection{Images filtering}
 Hebbian rule results are improved by adding a filter in the image sampling before the network training. This filter is a median filter provided by the Python Image Library, and has been inserted after the conversion of the image to black and white. This kind of filter is generally used to perform noise reduction in images, and appeared to be very useful in the image file reading/conversion by filling white pixels or removing useless pixels near the images edges. Results confirmed these behaviours: with the hebbian training algorithm, there were an improvement of about $9\%$ in correct result (with respect to results without the use of the filtering).
-
-\section{Results}
-Importance of the training images: images that are very different between them performs better.
-
-Increase of the number of units (and thus image dimension) does not affect results.
 
 
 %----------------------------------------------------------------------------------------
 %	x. Conclusions
 %----------------------------------------------------------------------------------------
 
-\section{Conclusions}
+\section{Results and Conclusions}
 
 %\subsection{Future developments}
 %\cite{pelillo} 
