@@ -6,18 +6,19 @@ import utils as utl
 import imageManager as iM
 
 # Config variables/constant
-testnumber = 4
-testel = 5  # elements to test
-trainel = 10  # elements to train
+testnumber = 2
+testel = 2  # elements to test
+trainel = 2  # elements to train
 corr_ratio = 0  # percentage of corruption ratio
 erase_ratio = 0 # percentage of image erased
 trainers = ["hebbian", "pseudoinv", "storkey"]
-trainer = trainers[1]
+trainer = trainers[0]
 filetype = "png"
 all_trainer = False  # True for all trainers or False for only one
-plotbool = True
+plotbool = False
 savebool = True
-
+filters = ["median", "none"]
+filter = filters[0]
 
 def test1(trainer_type):
     # corruption_val = 5
@@ -76,7 +77,7 @@ def test1(trainer_type):
 def test2(trainer_type, testel, trainel):
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/courier_digits_data_set/tiff_images_swidth"
     results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_2" + "/" + trainer_type
-    filename = results_dir + "/" + "tr" + str(trainel) + "_ts"+ str(testel)  + "_c" + str(corr_ratio) + "_e" + str(erase_ratio) + "_" + trainer_type + "." + filetype
+    filename = results_dir + "/" + filter + "_" +  "tr" + str(trainel) + "_ts"+ str(testel)  + "_c" + str(corr_ratio) + "_e" + str(erase_ratio) + "_" + trainer_type + "." + filetype
     dim = [14, 9]  # in the form rows * cols
     # testel = 8  # elements for training
     #corruption_val = 5
@@ -85,7 +86,7 @@ def test2(trainer_type, testel, trainel):
     image_dim = [dim[1], dim[0]]  # changing shape for images
 
     # Loading images data set
-    temp_train = iM.collectimages(image_dim, images_dir)
+    temp_train = iM.collectimages(image_dim, images_dir, filter)
 
     # image conversion to 1 and -1 for Hopfield net
     for i in range(temp_train.shape[0]):
@@ -125,7 +126,7 @@ def test3(trainer_type, testel, trainel):
     image_dim = [dim[1], dim[0]]  # changing shape for images
 
     # Loading images data set
-    temp_train = iM.collectimages(image_dim, images_dir)
+    temp_train = iM.collectimages(image_dim, images_dir, filter)
 
     # image conversion to 1 and -1 for Hopfield net
     for i in range(temp_train.shape[0]):
@@ -163,7 +164,7 @@ def test_semeion(trainer_type, testel, trainel):
     image_dim = [dim[1], dim[0]]  # changing shape for images
 
     # Loading images data set
-    temp_train = iM.collectimages(image_dim, images_dir)
+    temp_train = iM.collectimages(image_dim, images_dir, filter)
 
     # image conversion to 1 and -1 for Hopfield net
     for i in range(temp_train.shape[0]):
@@ -212,10 +213,11 @@ def main():
         elif testnumber == 2:
             test2(iterator[i], testel, trainel)
         elif testnumber == 3:
-            test3(iterator[i])
+            test3(iterator[i], testel, trainel)
         elif testnumber == 4:
             test_semeion(iterator[i], testel, trainel)
     #total2()
+    #filter_hebbian_2()
 
 def total2():
     test_couples = [[2,2],[2,3],[3,2],[5,5],[5,10],[8,8],[10,5],[10,10]]
@@ -225,6 +227,15 @@ def total2():
             trainel = test_couples[j][0]
             test2(trainers[i], testel, trainel)
 
+# remember to set hebbian as trainer before executing
+def filter_hebbian_2():
+
+    test_couples = [[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10]]
+
+    for j in range(len(test_couples)):
+        testel = test_couples[j][1]
+        trainel = test_couples[j][0]
+        test2(trainer, testel, trainel)
 
 if __name__ == "__main__":
     main()

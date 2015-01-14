@@ -63,7 +63,7 @@ def tomatrix(image):
     return newarray
 
 
-def collectimages(finaldim, img_dir):
+def collectimages(finaldim, img_dir, filter):
     i = 0
     entries = 0
 
@@ -86,8 +86,9 @@ def collectimages(finaldim, img_dir):
             imp = to_blackwhite(imp)
 
             # Image filtering
-            imp = imp.filter(ImageFilter.MedianFilter(size=5))
-            #imp = imp.filter(ImageFilter.ModeFilter(size=5))
+            if filter == "median":
+                imp = imp.filter(ImageFilter.MedianFilter(size=5))
+
 
             if orig_dim[0] > 100 and orig_dim[1] > 100:
                 # crop if dimensions higher than 100
