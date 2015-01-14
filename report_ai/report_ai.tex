@@ -219,9 +219,12 @@ As for testing,
 \subsubsection{Corruption function}
 
 \subsubsection{Images filtering}
-Hebbian rule results are improved by adding a filter in the image sampling before the network training. This filter is a median filter provided by the Python Image Library, and has been inserted after the conversion of the image to black and white. This kind of filter is generally used to perform noise reduction in images. 
+Hebbian rule results are improved by adding a filter in the image sampling before the network training. This filter is a median filter provided by the Python Image Library, and has been inserted after the conversion of the image to black and white. This kind of filter is generally used to perform noise reduction in images, and appeared to be very useful in the image file reading/conversion by filling white pixels or removing useless pixels near the images edges. Results confirmed these behaviours: with the hebbian training algorithm, there were an improvement of about $9\%$ in correct result (with respect to results without the use of the filtering).
 
 \section{Results}
+Importance of the training images: images that are very different between them performs better.
+
+Increase of the number of units (and thus image dimension) does not affect results.
 
 
 %----------------------------------------------------------------------------------------
