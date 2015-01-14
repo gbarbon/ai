@@ -200,7 +200,7 @@ where $h_{ij}$ is a form of local field at neuron $i$:
 \end{displaymath}
 
 \section{Implementation}
-
+The Hopfield network is implemented with the HopfieldNet class. Thus, a network will be an instance of this class. When an HopfieldNet object is created, the net is immediately initialized with the given input and the given training algorithm. The class is provided with a test function that performs the test of the whole net with the given test set. This function uses a neuron activation function, called $single_unit_updater$, that operates on a single unit. The behaviour of the net is governed by the energy function, called by the test function at each iteration. Units to be updated are chosen randomly; when every units has been updated, the energy is computed and compared to the one obtained at time $t-1$. When the difference between the two is zero, the update phase is stopped and result is returned to the user.
 
 \subsection{Learning Algorithms}
 \subsubsection{Hebbian rule}
@@ -208,9 +208,8 @@ The Hebbian rule has been implemented in three different ways. The first one is 
 \subsubsection{Pseudo-inverse rule}
 The pseudo-inverse rule has not been improved with predefined python functions, because of the complexity of the formula. Thus, the pseudo inverse training algorithm is implemented with four nested loops: the external ones iterate over training patterns while the internal ones iterate over single units for the weight computation. Moreover, this algorithm exploits a separate function for the computation of the $Q$ matrix. The original algorithm that iterated the units for the sum computation has been substituted with a dot product operator thanks to numpy library. Finally, in the pseudo inverse implementation the $Q$ matrix is already returned as an inverse, in order to save computational time. 
 \subsubsection{Storkey's rule}
-The core Storkey formula has been implemented using loops. Improvement where not possible, because dot product could not be exploited. As for the pseudo-inverse alg. also this one uses an external function, the $h_storkey$ function, that computes $h$. Also this function has not been optimized, even if this was possible, because the result with the dot product where too bad with respect to the normal one.\\ 
-
-\noindent Notice that both pseudo inverse and storkey avoid the computation of half of the matrix, by taking advantage of the fact that the matrix is symmetric.
+The core Storkey formula has been implemented using loops. Improvement where not possible, because dot product could not be exploited. As for the pseudo-inverse alg. also this one uses an external function, the $h_storkey$ function, that computes $h$. Also this function has not been optimized, even if this was possible, because the result with the dot product where too bad with respect to the normal one.\\ \\
+\noindent Notice that both pseudo inverse and Storkey avoid the computation of half of the matrix, by taking advantage of the fact that the matrix is symmetric.
 
 \subsection{Data set}
 The training data set 
@@ -219,9 +218,9 @@ As for testing,
 
 \subsubsection{Corruption function}
 
-
 \section{Results}
 
+Hebbian rule results are improved by adding a filter in the image sampling before the network training
 
 %----------------------------------------------------------------------------------------
 %	x. Conclusions
