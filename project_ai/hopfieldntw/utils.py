@@ -1,6 +1,7 @@
 __author__ = 'gbarbon'
 
 from matplotlib import pyplot as plt
+import numpy as np
 import random as rnd
 import copy as cp
 
@@ -42,6 +43,25 @@ def image_eraser(input_image, erase_ratio):
     erased_img.shape = (dim_row, dim_col)
 
     return erased_img
+
+#
+def semeion_loader(semeion_dir, el):
+    data = np.loadtxt(semeion_dir)
+    n_el = data.shape[0]
+    found = False
+    i = rnd.randint(0, n_el)
+    while ( not found):
+        if data[i][256+el] == 1:
+            found = True
+            image = cp.copy(data[i])
+        else:
+            i+=1
+        if i>=n_el:
+            i = 0
+    image = np.delete(image, [256,257,258,259,260,261,262,263,264,265,266]) # remove semeion label
+    image = image_converter(image)
+    image = image.reshape(16,16)
+    return image
 
 
 # Plot and/or save the results

@@ -39,6 +39,8 @@ def hebb_train(train_input, n_units):
     # 3: hebb rule improved with matrix multiplication
     start = time.time()
     train_transp = zip(*train_input)  # matrix transpose
+    train_transp = np.transpose(train_input)  # matrix transpose
+    #train_transp = train_transp.astype(np.float64)
     #w3 = np.zeros((n_units, n_units))
     w3 = np.dot(train_transp, train_input)
     w3 = w3.astype(float)
