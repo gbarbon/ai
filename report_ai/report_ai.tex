@@ -203,15 +203,25 @@ where $h_{ij}$ is a form of local field at neuron $i$:
 
 
 \subsection{Learning Algorithms}
+\subsubsection{Hebbian rule}
+The Hebbian rule has been implemented in three different ways. The first one is the original algorithm, with three nested loops: the outer one to iterate over training patterns, while the internal one iterate over the elements of the matrix. This solution, while perfectly follows the algorithm, does not performs wells, so it has been decided to exploits the strengths of the python language to improve performances. Following this idea, solution two uses the \emph{dot product} function provided by python in order to compute the product between points of a pattern and the sum of the corresponding results for each point between different patterns, thus avoiding the outer loop. This advantage is better exploited in solution three (the one adopted in the definitive version), where also the two loops that iterates over elements are removed. This solution perform directly the dot products between the transposed input patterns matrix and the normal one. Anyway, even if solution three is the best one, it has been discovered that solution one and two are the best choice for very small images.
+\subsubsection{Pseudo-inverse rule}
+The pseudo-inverse rule has not been improved with predefined python functions, because of the complexity of the formula. Thus, the pseudo inverse training algorithm is implemented with four nested loops: the external ones iterate over training patterns while the internal ones iterate over single units for the weight computation. Moreover, this algorithm exploits a separate function for the computation of the $Q$ matrix. The original algorithm that iterated the units for the sum computation has been substituted with a dot product operator thanks to numpy library. Finally, in the pseudo inverse implementation the $Q$ matrix is already returned as an inverse, in order to save computational time. 
+\subsubsection{Storkey's rule}
+The core Storkey formula has been implemented using loops. Improvement where not possible, because dot product could not be exploited. As for the pseudo-inverse alg. also this one uses an external function, the $h_storkey$ function, that computes $h$. Also this function has not been optimized, even if this was possible, because the result with the dot product where too bad with respect to the normal one.\\ 
 
-In the pseudo inverse implementation the $Q$ matrix is already returned as an inverse, in order to save computational time. The original algorithm that iterated the units for the sum computation has been substituted with a dot product operator thanks to numpy library.
-
-Storkey learning rule. The sub function that compute $c$ has not been optimized, because the result with the dot product where too bad with respect to the normal one. As for the core Storkey formula, it has been implemented using loops. Improvement where not possible, because dot product could not be exploited.
+\noindent Notice that both pseudo inverse and storkey avoid the computation of half of the matrix, by taking advantage of the fact that the matrix is symmetric.
 
 \subsection{Data set}
+The training data set 
+
+As for testing, 
+
+\subsubsection{Corruption function}
 
 
 \section{Results}
+
 
 %----------------------------------------------------------------------------------------
 %	x. Conclusions
