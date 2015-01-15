@@ -7,71 +7,71 @@ import imageManager as iM
 
 # Config variables/constant
 testnumber = 2
-testel = 2  # elements to test
-trainel = 2  # elements to train
-corr_ratio = 20  # percentage of corruption ratio
-erase_ratio = 30 # percentage of image erased
+testel = 8  # elements to test
+trainel = 8  # elements to train
+corr_ratio = 30  # percentage of corruption ratio
+erase_ratio = 0 # percentage of image erased
 trainers = ["hebbian", "pseudoinv", "storkey"]
-trainer = trainers[0]
+trainer = trainers[1]
 filetype = "png"
 all_trainer = False  # True for all trainers or False for only one
-plotbool = False
-savebool = True
+plotbool = True
+savebool = False
 filters = ["median", "none"]
 filter = filters[0]
 
-def test1(trainer_type):
-    # corruption_val = 5
-    results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_1"
-
-    # Create the training patterns
-    a_pattern = np.array([[0, 0, 0, 1, 0, 0, 0],
-                          [0, 0, 1, 0, 1, 0, 0],
-                          [0, 1, 0, 0, 0, 1, 0],
-                          [0, 1, 1, 1, 1, 1, 0],
-                          [0, 1, 0, 0, 0, 1, 0],
-                          [0, 1, 0, 0, 0, 1, 0],
-                          [0, 1, 0, 0, 0, 1, 0]])
-
-    b_pattern = np.array([[0, 1, 1, 1, 1, 0, 0],
-                          [0, 1, 0, 0, 0, 1, 0],
-                          [0, 1, 0, 0, 0, 1, 0],
-                          [0, 1, 1, 1, 1, 0, 0],
-                          [0, 1, 0, 0, 0, 1, 0],
-                          [0, 1, 0, 0, 0, 1, 0],
-                          [0, 1, 1, 1, 1, 0, 0]])
-
-    c_pattern = np.array([[0, 1, 1, 1, 1, 1, 0],
-                          [0, 1, 0, 0, 0, 0, 0],
-                          [0, 1, 0, 0, 0, 0, 0],
-                          [0, 1, 0, 0, 0, 0, 0],
-                          [0, 1, 0, 0, 0, 0, 0],
-                          [0, 1, 0, 0, 0, 0, 0],
-                          [0, 1, 1, 1, 1, 1, 0]])
-
-    a_pattern = utl.image_converter(a_pattern)
-    b_pattern = utl.image_converter(b_pattern)
-    c_pattern = utl.image_converter(c_pattern)
-
-    train_input = np.array([a_pattern.flatten(), b_pattern.flatten(), c_pattern.flatten()])
-
-    #hebbian training
-    net = HopfieldNet.HopfieldNet(train_input, trainer_type, [7, 7])
-
-    # creating test set
-    a_test = utl.corrupter(a_pattern, corr_ratio)
-    b_test = utl.corrupter(b_pattern, corr_ratio)
-    c_test = utl.corrupter(c_pattern, corr_ratio)
-
-    # training and testing the net
-    a_result = net.test(a_test)
-    b_result = net.test(b_test)
-    c_result = net.test(c_test)
-
-    #Show the results
-    test_set = np.array([a_test, b_test, c_test])
-    result_set = np.array([a_result, b_result, c_result])
-    utl.plotter(test_set, result_set, results_dir, plotbool, savebool)
+# def test1(trainer_type):
+#     # corruption_val = 5
+#     results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_1"
+#
+#     # Create the training patterns
+#     a_pattern = np.array([[0, 0, 0, 1, 0, 0, 0],
+#                           [0, 0, 1, 0, 1, 0, 0],
+#                           [0, 1, 0, 0, 0, 1, 0],
+#                           [0, 1, 1, 1, 1, 1, 0],
+#                           [0, 1, 0, 0, 0, 1, 0],
+#                           [0, 1, 0, 0, 0, 1, 0],
+#                           [0, 1, 0, 0, 0, 1, 0]])
+#
+#     b_pattern = np.array([[0, 1, 1, 1, 1, 0, 0],
+#                           [0, 1, 0, 0, 0, 1, 0],
+#                           [0, 1, 0, 0, 0, 1, 0],
+#                           [0, 1, 1, 1, 1, 0, 0],
+#                           [0, 1, 0, 0, 0, 1, 0],
+#                           [0, 1, 0, 0, 0, 1, 0],
+#                           [0, 1, 1, 1, 1, 0, 0]])
+#
+#     c_pattern = np.array([[0, 1, 1, 1, 1, 1, 0],
+#                           [0, 1, 0, 0, 0, 0, 0],
+#                           [0, 1, 0, 0, 0, 0, 0],
+#                           [0, 1, 0, 0, 0, 0, 0],
+#                           [0, 1, 0, 0, 0, 0, 0],
+#                           [0, 1, 0, 0, 0, 0, 0],
+#                           [0, 1, 1, 1, 1, 1, 0]])
+#
+#     a_pattern = utl.image_converter(a_pattern)
+#     b_pattern = utl.image_converter(b_pattern)
+#     c_pattern = utl.image_converter(c_pattern)
+#
+#     train_input = np.array([a_pattern.flatten(), b_pattern.flatten(), c_pattern.flatten()])
+#
+#     #hebbian training
+#     net = HopfieldNet.HopfieldNet(train_input, trainer_type, [7, 7])
+#
+#     # creating test set
+#     a_test = utl.corrupter(a_pattern, corr_ratio)
+#     b_test = utl.corrupter(b_pattern, corr_ratio)
+#     c_test = utl.corrupter(c_pattern, corr_ratio)
+#
+#     # training and testing the net
+#     a_result = net.test(a_test)
+#     b_result = net.test(b_test)
+#     c_result = net.test(c_test)
+#
+#     #Show the results
+#     test_set = np.array([a_test, b_test, c_test])
+#     result_set = np.array([a_result, b_result, c_result])
+#     utl.plotter(test_set, result_set, results_dir, plotbool, savebool)
 
 
 def test2(trainer_type, testel, trainel):
@@ -209,14 +209,15 @@ def main():
     for i in range(len(iterator)):
         print("Now trainer is: ", iterator[i])
         if testnumber == 1:
-            test1(iterator[i])
+            continue
+            #test1(iterator[i])
         elif testnumber == 2:
             test2(iterator[i], testel, trainel)
         elif testnumber == 3:
             test3(iterator[i], testel, trainel)
         elif testnumber == 4:
             test_semeion(iterator[i], testel, trainel)
-    total2()
+    #total2()
     #filter_hebbian_2()
 
 def total2():

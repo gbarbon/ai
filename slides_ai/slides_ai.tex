@@ -124,8 +124,8 @@ This project consists in the implementation of a Hopfield Network using python. 
 \begin{frame}
 \frametitle{Hopfield Network}
 \begin{itemize}
-\item form of recurrent artificial neural network
-\item invented by John Hopfield in 1982
+\item recurrent artificial neural network
+\item proposed by John Hopfield in 1982
 \item content-addressable memory systems
 \begin{itemize}
 \item main application: associative memories
@@ -172,7 +172,7 @@ $\Delta E = E(t+1)-E(t)\leq 0$
 \subsection{Learning Algorithms}
 
 \begin{frame}
-\frametitle{Learning Algorithms characteristics}
+\frametitle{Learning Algorithms features}
 Learning rule have some characteristics:
 \begin{itemize}
 \item\textbf{locality:} update of a given weight depends only on informations available to neurons on either side of the connection
@@ -190,7 +190,7 @@ Proportional weights are used in the activation between a pre and a post synapti
 \begin{block}{Hebbian rule}
 $w_{ij} = \frac{1}{N} \sum_{\mu = 1}^P x_i^\mu x_j^\mu$
 \end{block}
-where $N$ is the number of binary units with output $s_1,\ldots,s_N$.
+where $N$ is the number of binary units with output $x_1,\ldots,x_N$.
 \end{frame}
 
 %------------------------------------------------
@@ -202,7 +202,7 @@ $w_{ij} = \frac{1}{N} \sum_{\substack{u=1\\v=1    }}^m x_i^u (Q^{-1})^{uv} x_j^v
 \end{block}
 where $m$ is the total number of patterns and $q$ is:
 \begin{block}{$q$ computation}
-$q_{uv} = \frac{1}{N} \sum_{i=1}^N x_i^u x_j^v$
+$q_{uv} = \frac{1}{N} \sum_{i=1}^N x_i^u x_i^v$
 \end{block}
 This rule allows to improve the retrieval capability of the net with respect to Hebb rule, bringing the maximum number of pattern to $0.5N$. However, in this rule we have no local computation and no incremental updates, because it involves the calculation of an inverse.
 \end{frame}
@@ -215,7 +215,7 @@ Storkey proposes an algorithm to increase the capacity of the Hebbian rule witho
 \begin{block}{Storkey's rule}
 $w_{ij}^{\nu} = w_{ij}^{\nu-1}+ \frac{1}{N} x_i^{\nu}x_j^{\nu} - \frac{1}{N} x_i^{\nu}h_{ji}^{\nu} - \frac{1}{N} h_{ij}^{\nu}x_j^{\nu}$
 \end{block}
-where $h_{ij}$ is a form of local field at neuron $i$:
+where $h_{ij}$ is:
 \begin{block}{$h$ computation}
 $h_{ij}^{\mu} = \sum_{\substack{k=1\\k\neq i,j}}^n w_{ij}^{\mu-1} x_k^{\mu}$
 \end{block}
@@ -250,7 +250,7 @@ The Hopfield network is implemented with the HopfieldNet class:
 \begin{itemize}
 \item the net is immediately initialized with the given input and the given training algorithm at object creation
 \item class is provided with a test function
-\item The behaviour of the net is governed by the energy function
+\item the behaviour of the net is governed by the energy function
 \end{itemize}
 \end{frame}
 
@@ -266,13 +266,13 @@ The Hopfield network is implemented with the HopfieldNet class:
 \end{itemize}
 \item \textbf{Pseudo-inverse rule}:
 \begin{itemize}
-\item algorithm exploits dot product in thefunction for the computation of the $Q$ matrix.
+\item algorithm exploits dot product in the function for the computation of the $Q$ matrix.
 \end{itemize}
 \item \textbf{Storkey's rule}:
 \begin{itemize}
 \item improvements where not possible because of complexity of the formulas
 \end{itemize}
-\item both pseudo inverse and Storkey avoid the computation of half of the matrix, by taking advantage of the fact that the matrix is symmetric.
+\item both Pseudo-inverse and Storkey avoid the computation of half of the matrix, by taking advantage of the fact that the matrix is symmetric.
 \end{itemize}
 \end{frame}
 
@@ -358,7 +358,7 @@ The Hopfield network is implemented with the HopfieldNet class:
 
 \begin{frame}
 \frametitle{Testing with Courier Font Data Set III}
-Check the ability of the network to recall stored memories with the use of corrupted or partial images.
+Checking of the ability of the network to recall stored memories with the use of corrupted or partial images.
 \begin{figure}
 \includegraphics[width=0.4\linewidth]{median_tr3_ts3_c20_e30_pseudoinv.png}
 \end{figure}
