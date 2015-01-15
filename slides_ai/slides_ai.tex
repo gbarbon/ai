@@ -110,129 +110,305 @@ Universit\`{a} Ca'Foscari Venezia\\ % Your institution for the title page
 %----------------------------------------------------------------------------------------
 
 %------------------------------------------------
-\section{First Section} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
-%------------------------------------------------
+\section{The Hopfield Networks} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
 
-\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+\subsection{Introduction} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
 
 \begin{frame}
-\frametitle{Paragraphs of Text}
-Sed iaculis dapibus gravida. Morbi sed tortor erat, nec interdum arcu. Sed id lorem lectus. Quisque viverra augue id sem ornare non aliquam nibh tristique. Aenean in ligula nisl. Nulla sed tellus ipsum. Donec vestibulum ligula non lorem vulputate fermentum accumsan neque mollis.\\~\\
-
-Sed diam enim, sagittis nec condimentum sit amet, ullamcorper sit amet libero. Aliquam vel dui orci, a porta odio. Nullam id suscipit ipsum. Aenean lobortis commodo sem, ut commodo leo gravida vitae. Pellentesque vehicula ante iaculis arcu pretium rutrum eget sit amet purus. Integer ornare nulla quis neque ultrices lobortis. Vestibulum ultrices tincidunt libero, quis commodo erat ullamcorper id.
+\frametitle{Aim of the project}
+This project consists in the implementation of a Hopfield Network using python. The aim of the implementation is to perform digit recognition. The network will be trained with different algorithms, in such a way to analyse performances and thus identify the best solution.
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{Bullet Points}
+\frametitle{Hopfield Network}
 \begin{itemize}
-\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus eu
-\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
-\item Nam cursus est eget velit posuere pellentesque
-\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida
+\item form of recurrent artificial neural network
+\item invented by John Hopfield in 1982
+\item content-addressable memory systems
+\begin{itemize}
+\item main application: associative memories
+\end{itemize}
+\item use of binary neuron units with sign activation function
+\item network converge to a local minimum (or ”lowest energy state”).
 \end{itemize}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{Blocks of Highlighted Text}
-\begin{block}{Block 1}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+\frametitle{Hopfield Network II}
+Main features:
+\begin{itemize}
+\item\textbf{sigle layer recurrent networks} in which each neuron is connected to all the others, with the exception of itself (so no cycles are admitted)
+\item\textbf{symmetric:} the synaptic weight matrix is symmetric, so $W=W^T$. This means that the weights is the same in both direction between two neurons.
+\end{itemize}
+The implemented Hopfield Network version uses \emph{asynchronous update}. This means that neurons are updated one by one and picked randomly.
+\end{frame}
+
+%------------------------------------------------
+
+
+\begin{frame}
+\frametitle{Formulas}
+\begin{block}{Activation function}
+$V_i = \begin{cases}
+		+1 & \text{if } H_i > 0 \\
+		-1 & \text{if } H_i < 0
+	\end{cases}$
 \end{block}
 
-\begin{block}{Block 2}
-Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
+\begin{block}{Energy}
+$E = - \frac{1}{2} \sum_{i=1}^n \sum_{\substack{j=1 \\ j \neq i}}^n w_{ij} V_i V_j - \sum_{i=1}^n I_i V_i$
 \end{block}
+\begin{block}{Energy variation}
+$\Delta E = E(t+1)-E(t)\leq 0$
+\end{block}
+\end{frame}
 
-\begin{block}{Block 3}
-Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
+%------------------------------------------------
+
+\subsection{Learning Algorithms}
+
+\begin{frame}
+\frametitle{Learning Algorithms characteristics}
+Learning rule have some characteristics:
+\begin{itemize}
+\item\textbf{locality:} update of a given weight depends only on informations available to neurons on either side of the connection
+\item\textbf{incremental:} an incremental rule modifies the old network configuration to memorize a new pattern without needing to refer to any of the previous learnt patterns
+\item\textbf{immediate:} an immediate update of the network allows faster learning
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+
+\begin{frame}
+\frametitle{Hebbian rule}
+Proportional weights are used in the activation between a pre and a post synaptic neurons:
+\begin{block}{Hebbian rule}
+$w_{ij} = \frac{1}{N} \sum_{\mu = 1}^P x_i^\mu x_j^\mu$
+\end{block}
+where $N$ is the number of binary units with output $s_1,\ldots,s_N$.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Pseudo-inverse rule}
+\begin{block}{Pseudo-inverse rule}
+$w_{ij} = \frac{1}{N} \sum_{\substack{u=1\\v=1    }}^m x_i^u (Q^{-1})^{uv} x_j^v$
+\end{block}
+where $m$ is the total number of patterns and $q$ is:
+\begin{block}{$q$ computation}
+$q_{uv} = \frac{1}{N} \sum_{i=1}^N x_i^u x_j^v$
+\end{block}
+This rule allows to improve the retrieval capability of the net with respect to Hebb rule, bringing the maximum number of pattern to $0.5N$. However, in this rule we have no local computation and no incremental updates, because it involves the calculation of an inverse.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Storkey's rule}
+Storkey proposes an algorithm to increase the capacity of the Hebbian rule without losing locality and incrementality.
+\begin{block}{Storkey's rule}
+$w_{ij}^{\nu} = w_{ij}^{\nu-1}+ \frac{1}{N} x_i^{\nu}x_j^{\nu} - \frac{1}{N} x_i^{\nu}h_{ji}^{\nu} - \frac{1}{N} h_{ij}^{\nu}x_j^{\nu}$
+\end{block}
+where $h_{ij}$ is a form of local field at neuron $i$:
+\begin{block}{$h$ computation}
+$h_{ij}^{\mu} = \sum_{\substack{k=1\\k\neq i,j}}^n w_{ij}^{\mu-1} x_k^{\mu}$
 \end{block}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{Multiple Columns}
-\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-
-\column{.45\textwidth} % Left column and width
-\textbf{Heading}
-\begin{enumerate}
-\item Statement
-\item Explanation
-\item Example
-\end{enumerate}
-
-\column{.5\textwidth} % Right column and width
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-
-\end{columns}
+\frametitle{Network Capacity and spurious patterns}
+\begin{itemize}
+\item the maximum number of patterns that can be stored depends on neurons and connections.
+\item recall accuracy between vectors and nodes was 0.138 (Hertz et al., 1991)
+\item perfect recalls and high capacity, $>0.14$, can be loaded in the network by Hebbian learning method.
+\item\textbf{Spurious patterns} can occur: \begin{itemize}
+\item sometimes the network converges to spurious patterns, that are not in the set of training patterns
+\item the energy in these spurious patterns is also a local minima. 
+\item also the negation of stored patterns is considered spurious
+\end{itemize}
+\end{itemize}
 \end{frame}
 
-%------------------------------------------------
-\section{Second Section}
+
+
+
 %------------------------------------------------
 
+\section{Implementation}
+
 \begin{frame}
-\frametitle{Table}
-\begin{table}
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\caption{Table caption}
-\end{table}
+\frametitle{Implementation I}
+The Hopfield network is implemented with the HopfieldNet class:
+\begin{itemize}
+\item the net is immediately initialized with the given input and the given training algorithm at object creation
+\item class is provided with a test function
+\item The behaviour of the net is governed by the energy function
+\end{itemize}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
+\frametitle{Implementation II}
+\begin{itemize}
+\item \textbf{Hebbian rule}:
+\begin{itemize}
+\item three versions
+\item last one is chosen: dot products substitutes all loops
+\end{itemize}
+\item \textbf{Pseudo-inverse rule}:
+\begin{itemize}
+\item algorithm exploits dot product in thefunction for the computation of the $Q$ matrix.
+\end{itemize}
+\item \textbf{Storkey's rule}:
+\begin{itemize}
+\item improvements where not possible because of complexity of the formulas
+\end{itemize}
+\item both pseudo inverse and Storkey avoid the computation of half of the matrix, by taking advantage of the fact that the matrix is symmetric.
+\end{itemize}
 \end{frame}
 
 %------------------------------------------------
+%
+%\begin{frame}
+%\frametitle{Table}
+%\begin{table}
+%\begin{tabular}{l l l}
+%\toprule
+%\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
+%\midrule
+%Treatment 1 & 0.0003262 & 0.562 \\
+%Treatment 2 & 0.0015681 & 0.910 \\
+%Treatment 3 & 0.0009271 & 0.296 \\
+%\bottomrule
+%\end{tabular}
+%\caption{Table caption}
+%\end{table}
+%\end{frame}
 
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Verbatim}
-\begin{example}[Theorem Slide Code]
-\begin{verbatim}
+%------------------------------------------------
+%
+%\begin{frame}
+%\frametitle{Theorem}
+%\begin{theorem}[Mass--energy equivalence]
+%$E = mc^2$
+%\end{theorem}
+%\end{frame}
+
+%------------------------------------------------
+
+%\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+%\frametitle{Verbatim}
+%\begin{example}[Theorem Slide Code]
+%\begin{verbatim}
+%\begin{frame}
+%\frametitle{Theorem}
+%\begin{theorem}[Mass--energy equivalence]
+%$E = mc^2$
+%\end{theorem}
+%\end{frame}\end{verbatim}
+%\end{example}
+%\end{frame}
+
+%------------------------------------------------
+\section{Testing the net}
+
+\subsection{Results}
 \begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-\end{frame}\end{verbatim}
-\end{example}
+\frametitle{Testing with Courier Font Data Set}
+\begin{itemize}
+\item Three different learning algorithms:\\\textbf{Hebbian, Pseudo-inverse and Storkey}
+\item \textbf{Courier Font Digits} dataset:
+\begin{itemize}
+\item 10 tiff images of $44x70$ pixels in RGB colormap, with white background
+\item each image contains a different digit written in black Courier font, from 0 to 9
+\item lateral white spaces have been removed in order to improve algorithm efficiency
+\end{itemize}
+\item image dimension of $14x9$ that leads to a network of $126$ units
+\end{itemize}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{Figure}
-Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
-%\begin{figure}
-%\includegraphics[width=0.8\linewidth]{test}
-%\end{figure}
+\frametitle{Testing with Courier Font Data Set II}
+\textbf{Accuracy:}
+\begin{itemize}
+\item Pseudo-Inverse resulted the best learning algorithm, with an accuracy of $100\%$
+\item Storkey resulted second with an accuracy of $98,7\%$
+\item Hebbian rule is the worst one, performing only an accuracy of $74,4\%$
+\end{itemize}
+\textbf{Time performances:} 
+\begin{itemize}
+\item Hebbian resulted the best one, by training a network with 10 patterns in just $0.0002$ seconds. 
+\item Pseudo-inverse rule obtained $1.5$ seconds for the same number of patterns
+\item Storkey's resulted the worst algorithm ($21$ seconds)
+\end{itemize}
 \end{frame}
 
 %------------------------------------------------
 
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Citation}
-An example of the \verb|\cite| command to cite within the presentation:\\~
+\begin{frame}
+\frametitle{Testing with Courier Font Data Set III}
+Check the ability of the network to recall stored memories with the use of corrupted or partial images.
+\begin{figure}
+\includegraphics[width=0.4\linewidth]{median_tr3_ts3_c20_e30_pseudoinv.png}
+\end{figure}
+\end{frame}
 
-This statement requires citation \cite{p1}.
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Testing with other Data sets}
+\textbf{Digital 7 Font Digits}
+\begin{itemize}
+\item chosen dimension is of $25x16$ (network of $400$ units) 
+\item aim: check the network behaviour with larger and clearer images. 
+\item increased the number of errors: this font uses digits that are very similar. 
+\end{itemize} 
+\textbf{Semeion Handwritten Data Set}
+\begin{itemize}
+\item Courier Font Digits dataset as training, Semeion Handwritten Data Set as test set (digits picked randomly)
+\item pattern dimension: $16x16$ (total number of units to $256$)
+\item the network appears to be able to recognize some of the handwritten digits
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\subsection{Filtering}
+\begin{frame}
+\frametitle{Filtering data set images}
+\begin{itemize}
+\item Hebbian rule results are improved by adding a filter in the image sampling before the network training
+\item median filter provided by the Python Image Library, inserted after the conversion of the image to black and white 
+\item it fills white pixels or removes useless pixels near the images edges
+\item Results: with the Hebbian tule, there were an improvement of about \textbf{9\%} (with respect to results without the use of the filter)
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\subsection{Conclusion}
+\begin{frame}
+\frametitle{Conclusions}
+\begin{itemize}
+\item Convergence to wrong pattern occurs, specially with Hebbian training
+\item The Pseudo-Inverse rule algorithm resulted to be the best learning rule
+\item tests also shows the importance of the training images: 
+\begin{itemize}
+\item images that are very different between them perform better
+\item digits that results in similar images, even if they represents different numbers, are mismatched by the network
+\end{itemize}
+\end{itemize}
 \end{frame}
 
 %------------------------------------------------
@@ -241,9 +417,24 @@ This statement requires citation \cite{p1}.
 \frametitle{References}
 \footnotesize{
 \begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
-\bibitem[Smith, 2012]{p1} John Smith (2012)
-\newblock Title of the publication
-\newblock \emph{Journal Name} 12(3), 45 -- 678.
+
+\bibitem[Hebb49]{p1} Hebb, D. O. (1949)
+\newblock The Organization of Behavior
+\newblock \emph{Wiley, The Organization of Behavior}
+
+%pseudo inverse
+\bibitem[wei584397storage]{p5} Wei, Gang and Yu, Zheyuan
+\newblock Storage Capacity of Letter Recognition in Hopfield Networks
+\newblock \emph{Faculty of Computer Science, Dalhousie University}
+
+%storkey 
+\bibitem[Storkey97increasingthe]{p6} Amos Storkey (1997)
+\newblock Increasing the capacity of a Hopfield network without sacrificing functionality
+\newblock \emph{ICANN97: Lecture Notes in Computer Science}
+
+\bibitem[pelillo]{p3} Pelillo, M. (2014)
+\newblock Artificial Intelligence Course notes
+
 \end{thebibliography}
 }
 \end{frame}

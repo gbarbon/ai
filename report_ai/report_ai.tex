@@ -199,8 +199,10 @@ where $h_{ij}$ is a form of local field at neuron $i$:
 	h_{ij}^{\mu} = \sum_{\substack{k=1\\k\neq i,j}}^n w_{ij}^{\mu-1} x_k^{\mu}
 \end{displaymath}
 
+\subsection{Network Capacity}
+
 \section{Implementation}
-The Hopfield network is implemented with the HopfieldNet class. Thus, a network will be an instance of this class. When an HopfieldNet object is created, the net is immediately initialized with the given input and the given training algorithm. The class is provided with a test function that performs the test of the whole net with the given test set. This function uses a neuron activation function, called $single_unit_updater$, that operates on a single unit. The behaviour of the net is governed by the energy function, called by the test function at each iteration. Units to be updated are chosen randomly; when every units has been updated, the energy is computed and compared to the one obtained at time $t-1$. When the difference between the two is zero, the update phase is stopped and result is returned to the user.
+The Hopfield network is implemented with the HopfieldNet class. Thus, a network will be an instance of this class. When an HopfieldNet object is created, the net is immediately initialized with the given input and the given training algorithm. The class is provided with a test function that performs the test of the whole net with the given test set. This function uses a neuron activation function, called $single\_unit\_updater$, that operates on a single unit. The behaviour of the net is governed by the energy function, called by the test function at each iteration. Units to be updated are chosen randomly; when every units has been updated, the energy is computed and compared to the one obtained at time $t-1$. When the difference between the two is zero, the update phase is stopped and result is returned to the user.
 
 \subsection{Learning Algorithms}
 
@@ -211,8 +213,19 @@ The Hebbian rule has been implemented in three different ways. The first one is 
 The pseudo-inverse rule has not been improved with predefined python functions, because of the complexity of the formula. Thus, the pseudo inverse training algorithm is implemented with four nested loops: the external ones iterate over training patterns while the internal ones iterate over single units for the weight computation. Moreover, this algorithm exploits a separate function for the computation of the $Q$ matrix. The original algorithm that iterated the units for the sum computation has been substituted with a dot product operator thanks to numpy library. Finally, in the pseudo inverse implementation the $Q$ matrix is already returned as an inverse, in order to save computational time. 
 
 \subsubsection{Storkey's rule}
-The core Storkey formula has been implemented using loops. Improvement where not possible, because dot product could not be exploited. As for the pseudo-inverse alg. also this one uses an external function, the $h_storkey$ function, that computes $h$. Also this function has not been optimized, even if this was possible, because the result with the dot product where too bad with respect to the normal one.\\ \\
+The core Storkey formula has been implemented using loops. Improvement where not possible, because dot product could not be exploited. As for the pseudo-inverse alg. also this one uses an external function, the $h\_storkey$ function, that computes $h$. Also this function has not been optimized, even if this was possible, because the result with the dot product where too bad with respect to the normal one.\\ \\
 \noindent Notice that both pseudo inverse and Storkey avoid the computation of half of the matrix, by taking advantage of the fact that the matrix is symmetric.
+
+\subsection{Minor functions}
+A lot of minor functions have been implemented in order to support the program. Dataset loading functions have been provided, as well as plotter function to show results. Two interesting functions, that resulted very useful in the test phase, are the following ones:
+\subsubsection{Corruption and Erase functions}
+In order to test the capacity of the net to recognize corrupted images, two function have been implemented:
+\begin{itemize}
+\item\textbf{corrupter} this function corrupt the images by introducing noise, represented by $1$ values. A parameter allows to decide the percentage of image to be noised. Involved points are randomly distributed in the image.
+\item\textbf{image\_eraser} this function will erase (fill with "1" values) a part of the image. The percentage of the deletion is decided through a parameter.
+\end{itemize} 
+
+\section{Testing the net}
 
 \subsection{Data set}
 These section describes the dataset used in the project. Each dataset has been used for both training and testing phases, with the exception of the Semeion, which has been used only for testing.
@@ -222,11 +235,14 @@ These section describes the dataset used in the project. Each dataset has been u
 \item\textbf{Semeion Handwritten Data Set} This dataset was created by Tactile Srl and donated in 1994 to Semeion Research Center of Sciences of Communication for machine learning research. The data set  consists of 1593 scanned handwritten digits from around 80 persons, stretched in a rectangular box 16x16 in a gray scale of 256 values. Then each pixel of each image was scaled into a bolean (1/0) value using a fixed threshold. Each person wrote on a paper all the digits from 0 to 9, twice (the first time in the normal way while the second one in a fast way)\cite{semeion}.
 \end{itemize}
 
-\section{Testing the net}
-Importance of the training images: images that are very different between them performs better.
+\subsection{Results}
+The network has been tested with the three different learning algorithms: Hebbian, Pseudo-inverse and Storkey. The most relevant tests are the ones performed with the use of the Courier Font Digits dataset, with an image dimension of $14x9$ that leads to a network of $126$ units. The Pseudo-Inverse is resulted the best learning algorithm, with an accuracy of $100\%$. The Storkey resulted second with an accuracy of $98,7\%$ while the last one is resulted the Hebbian rule, performing only an accuracy of $74,4\%$. On the contrary, as for time performances, the Hebbian resulted the best one, by training a network with 10 patterns in just $0.0002$ seconds. Pseudo-inverse rule obtained $1.5$ seconds for the same number of patterns, while the Storkey's resulted the worst algorithm, computing the training in about $21$ seconds. It is important to notice that Hebbian implementation exploits the dot product function supplied by python, while the Storkey's rule could not be improved because of its complexity.\\
 
-Increase of the number of units (and thus image dimension) does not affect results.
-\subsubsection{Corruption function}
+Some tests have been developed to check the ability of the network to recall stored memories with the use of corrupted or partial images. Results in this case are very interesting. In example with the corruption of the $20\%$ of each test images and the deletion of the $30\%$ of the same images, the Pseudo-inverse algorithm still obtained an high accuracy, correctly matching the $89\%$ of the images. Also in this case, the Pseudo-inverse resulted the best learning algorithm.\\
+
+Further tests have been done with the use of the Digital 7 Font Digits data set. In this case the chosen dimension is of $25x16$, leading to a network of $400$ units. The aim of this test was to check the network behaviour with larger and clearer images. Anyway, even if images in this data set appear to be clearer to a human, the network results instead increased the number of errors. This is due to the fact that this font uses digits that are very similar. In example, vertical lines are used in almost all the numbers, and this lead to an incorrect match by the Hopfield net.\\ 
+
+Finally a set of tests has been performed also with the use of the Courier Font Digits dataset as training and the Semeion Handwritten Data Set as test set. The dimension of the training patterns has been converted to $16x16$ in order to match the Semeion one, thus bringing the total number of units to $256$. Even if such kind of test could be quite strange (the numbers used in the test are handwritten while the ones used for training come from a computer font), results are interesting: indeed, the network appears to be able to recognize some of the handwritten digits. This is also due to the fact that the Courier font used in training images fits well handwritten digits. The fact that the Courier Font Digits set images have been stretched to match the Semeion images also contributed to positive results. Finally, it is important to notice that handwritten digits are picked randomly from the dataset.\\
 
 \subsubsection{Images filtering}
 Hebbian rule results are improved by adding a filter in the image sampling before the network training. This filter is a median filter provided by the Python Image Library, and has been inserted after the conversion of the image to black and white. This kind of filter is generally used to perform noise reduction in images, and appeared to be very useful in the image file reading/conversion by filling white pixels or removing useless pixels near the images edges. Results confirmed these behaviours: with the hebbian training algorithm, there were an improvement of about $9\%$ in correct result (with respect to results without the use of the filtering).
@@ -237,6 +253,9 @@ Hebbian rule results are improved by adding a filter in the image sampling befor
 %----------------------------------------------------------------------------------------
 
 \section{Results and Conclusions}
+The Pseudo-Inverse rule algorithm resulted to be the best learning rule, even if it does not grant locality and it is not incremental. Storkey's one obtains very similar results by granting these two features, but, due to implementation constraints, it is very slow.\\
+The test also shows the importance of the training images. Indeed, images that are very different between them performs better, while digits that results in similar images, even if they represents different numbers, are mismatched by the network. This behaviour affect also the capacity rule, that becomes not true for the Hebbian algorithm: even if we have a sufficient number of neurons to collect 10 patterns, the network still do not performs well.
+%Increase of the number of units (and thus image dimension) does not affect results.
 
 %\subsection{Future developments}
 %\cite{pelillo} 
@@ -262,7 +281,7 @@ Hebbian rule results are improved by adding a filter in the image sampling befor
 
 \onecolumn
 \appendix
-\label{app:appendixA}
+\label{app:appendixB}
 %\lstset{language=Python}
 \lstdefinestyle{myCustomMatlabStyle}{
   language=Python,
@@ -301,9 +320,14 @@ class HopfieldNet:
 
         # net training
         if trainer_type == "hebbian":
-            self.weights = tr.hebb_train(train_input, n_patterns, self.n_units)
+            # self.weights = tr.hebb_train(train_input, n_patterns, self.n_units)
+            self.weights = tr.hebb_train(train_input, self.n_units)
         elif trainer_type == "pseudoinv":
             self.weights = tr.pseudo_inverse_train(train_input, n_patterns, self.n_units)
+        elif trainer_type == "storkey":
+            self.weights = tr.storkey_train(train_input, n_patterns, self.n_units)
+        elif trainer_type == "sanger":
+            self.weights = tr.sanger_train(train_input, n_patterns, self.n_units)
         #else:
 
     def single_unit_updater(self, unit_idx, pattern):
@@ -344,7 +368,7 @@ class HopfieldNet:
 
         k = 0
         while k < 10:
-            randomrange = range(len(pattern))
+            randomrange = list(range(len(pattern)))
             rd.shuffle(randomrange)
             for i in randomrange:
                 pattern[i] = self.single_unit_updater(i, pattern)
@@ -368,72 +392,196 @@ class HopfieldNet:
 __author__ = 'gbarbon'
 
 import numpy as np
+import time
 
 
 # train intput is in the form of a vector
-def hebb_train(train_input, n_patterns, n_units):
+# def hebb_train(train_input, n_patterns, n_units):
+def hebb_train(train_input, n_units):
     # weights matrix init to zeros
-    weights = np.zeros((n_units, n_units))
 
-    # 1
-    for l in range(n_patterns):
-        for i in range(n_units):
-            for j in range(n_units):
-                if i == j:
-                    continue
-            # weights[i,j] = (1/n_units)* sum(...)
-                else:
-                    weights[i, j] += train_input[l, i] * train_input[l, j]
-                # print("Temp weight at this point is", weights[i,j])
-                # uguale???: weights[i,j] = sum(train_input[:,i]*train_input[:,j])
+    # # 1: original hebb algorithm
+    # start = time.time()
+    # w1 = np.zeros((n_units, n_units))
+    # start = time.time()
+    # for l in range(n_patterns):
+    # for i in range(n_units):
+    # for j in range(i+1, n_units): # in order to compute only the upper half matrix
+    # w1[i, j] += train_input[l, i] * train_input[l, j]
+    #             w1[j, i] = w1[i, j]
+    # w1 *= 1 / float(n_units)
+    # end = time.time()
+    # elapsed = end - start
+    # print("w1 elapsed time", elapsed)
 
-    return weights
+    # # 2: hebb rule improved substituting the pattern loop with dot products
+    # start = time.time()
+    # w2 = np.zeros((n_units, n_units))
+    # train_transp = zip(*train_input)
+    # for i in range(n_units):
+    #     for j in range(i+1, n_units): # in order to compute only the upper half matrix
+    #         w2[i, j] = np.dot(train_transp[i], train_transp[j])
+    #         w2[j, i] = w2[i, j]
+    # w2 *= 1 / float(n_units)
+    # end = time.time()
+    # elapsed = end - start
+    # print("w2 elapsed time", elapsed)
 
-#  uses the storkey rule
-def storkey_train(train_input, n_patterns, n_units):
-    weights = np.zeros((n_units, n_units))
+    # 3: hebb rule improved with matrix multiplication
+    start = time.time()
+    train_transp = zip(*train_input)  # matrix transpose
+    train_transp = np.transpose(train_input)  # matrix transpose
+    #train_transp = train_transp.astype(np.float64)
+    #w3 = np.zeros((n_units, n_units))
+    w3 = np.dot(train_transp, train_input)
+    w3 = w3.astype(float)
+    w3 *= 1 / float(n_units)
+    np.fill_diagonal(w3, 0)
+    end = time.time()
+    elapsed = end - start
+    #print("w3 elapsed time", elapsed)
+    print("Hebbian elapsed time", elapsed)
 
-    #..#
+    # # Checking issues
+    # if np.array_equal(w1,w2) and np.array_equal(w2, w3):
+    #     print("All methods returns the same weight matrix.")
 
-    return weights
+    # else:
+    #     print("w1 and w2 ", np.array_equal(w1,w2))
+    #     print("w2 and w3 ", np.array_equal(w2,w3))
+    #     print("w3 and w1 ", np.array_equal(w1,w3))
 
+    return w3
+
+
+# support function fro pseudo inverse rule
 def q_pseudo_inv(train_input, n_patterns, n_units):
-    q = np.zeros((n_patterns, n_patterns))
+    # # Original version with loop
+    # start = time.time()
+    # q1 = np.zeros((n_patterns, n_patterns))
+    # for v in range(n_patterns):
+    # for u in range(n_patterns):
+    # for i in range(n_units):
+    #             q1[u][v] += train_input[v][i] * train_input[u][i]
+    # end = time.time()
+    # elapsed = end - start
+    # print("original version elapsed time", elapsed)
 
+    # New version with dot product
+    # start = time.time()
+    q2 = np.zeros((n_patterns, n_patterns))
     for v in range(n_patterns):
         for u in range(n_patterns):
-            # for i in range(n_units):
-            #     q[u][v] += train_input[v][i]*train_input[u][i]
-            q[u][v] = np.dot(train_input[v], train_input[u])
+            q2[u][v] = np.dot(train_input[v], train_input[u])
+    # end = time.time()
+    # elapsed = end - start
+    # print("improved version elapsed time", elapsed)
 
-    q *= 1 / float(n_units)
-    q = np.linalg.inv(q) # inverseof the matrix
+    # # Checking issues
+    # if np.array_equal(q1, q2):
+    #     print("Both methods returns the same Q matrix.")
+
+    q2 *= 1 / float(n_units)
+    q = np.linalg.inv(q2)  # inverseof the matrix
 
     return q
+
 
 # uses the pseudo inverse training rule
 def pseudo_inverse_train(train_input, n_patterns, n_units):
     weights = np.zeros((n_units, n_units))
 
+    start = time.time()
+    # notice: the matrix is returned already inverse
     q = q_pseudo_inv(train_input, n_patterns, n_units)
 
     for v in range(n_patterns):
         for u in range(n_patterns):
             for i in range(n_units):
-                for j in range(n_units):
-                    if i == j:
-                        continue
-                    else:
-                        weights[i, j] += train_input[v, i] * q[v][u] *train_input[u, j]
-
-
+                for j in range(i + 1, n_units):  # in order to compute only the upper half matrix
+                    weights[i, j] += train_input[v, i] * q[v][u] * train_input[u, j]
+                    weights[j, i] = weights[i, j]
     weights *= 1 / float(n_units)
-    return weights
-\end{lstlisting}
 
-\clearpage
+    end = time.time()
+    elapsed = end - start
+    print("Pseudo inverse elapsed time", elapsed)
+
+    return weights
+
+
+# support function for storkey rule
+def h_storkey(weights, i_index, j_index, pattern, pattern_idx, n_units):
+    h = 0
+
+    # start = time.time()
+    for k in range(n_units):
+        if k != i_index and k != j_index:
+            h += weights[i_index][k] * pattern[pattern_idx][k]
+    # end = time.time()
+    # elapsed1 = end - start
+
+    # start = time.time()
+    # h2 = 0
+    # h2 = np.dot(weights[i_index], pattern[pattern_idx])
+    # end = time.time()
+    # h2 -= weights[i_index][i_index]*pattern[pattern_idx][i_index]
+    # h2 -= weights[i_index][j_index]*pattern[pattern_idx][j_index]
+    # # end = time.time()
+    # elapsed2 = end - start
+    #
+    # if h==h2:
+    # print("Results are the same")
+    # else:
+    # print("RESULTS ARE DIFFERENT!! h1: ", h ," h2: ", h2)
+    # print("First perf is ", elapsed1," while dot is ", elapsed2)
+
+    return h
+
+
+# uses the storkey rule
+def storkey_train(train_input, n_patterns, n_units):
+    weights = np.zeros((n_units, n_units))
+
+    start = time.time()
+    for l in range(n_patterns):
+        for i in range(n_units):
+            for j in range(i + 1, n_units):  # in order to compute only the upper half matrix
+                temp = train_input[l, i] * train_input[l, j]
+                temp -= train_input[l, i] * h_storkey(weights, j, i, train_input, l, n_units)
+                temp -= h_storkey(weights, i, j, train_input, l, n_units) * train_input[l, j]
+                temp *= 1 / float(n_units)
+                weights[i, j] += temp
+                weights[j, i] = weights[i, j]
+        print("Storkey rule iteration: ", l)
+    end = time.time()
+    elapsed = end - start
+    print("Storkey algorithm execution time: ", elapsed)
+
+    return weights
+
+
+# sanger rule applied to hopfield networks, probably not working
+def sanger_train(train_input, n_patterns, n_units):
+    weights = np.zeros((n_units, n_units))
+
+    start = time.time()
+    for l in range(n_patterns):
+        for i in range(n_units):
+            for j in range(i + 1, n_units):
+                temp = 0
+                for k in range(j):
+                    temp += weights[i][k] * train_input[l][k]
+                weights[i][j] = train_input[l][j] * train_input[l][i] - train_input[l][j] * temp
+                weights[i][j] *= 1 / float(n_units)
+                weights[j][i] = weights[i][j]
+
+    end = time.time()
+    elapsed = end - start
+    print("Sanger algorithm execution time: ", elapsed)
+
+    return weights
 \subsection{imageManager.py}
-\begin{lstlisting}
 __author__ = 'gbarbon'
 
 from PIL import Image
@@ -499,7 +647,7 @@ def tomatrix(image):
     return newarray
 
 
-def collectimages(finaldim, img_dir):
+def collectimages(finaldim, img_dir, filter):
     i = 0
     entries = 0
 
@@ -522,8 +670,8 @@ def collectimages(finaldim, img_dir):
             imp = to_blackwhite(imp)
 
             # Image filtering
-            imp = imp.filter(ImageFilter.MedianFilter(size=5))
-            #imp = imp.filter(ImageFilter.ModeFilter(size=5))
+            if filter == "median":
+                imp = imp.filter(ImageFilter.MedianFilter(size=5))
 
             if orig_dim[0] > 100 and orig_dim[1] > 100:
                 # crop if dimensions higher than 100
@@ -547,6 +695,7 @@ def collectimages(finaldim, img_dir):
 __author__ = 'gbarbon'
 
 from matplotlib import pyplot as plt
+import numpy as np
 import random as rnd
 import copy as cp
 
@@ -560,12 +709,14 @@ def image_converter(input_image):
 
 
 # corrupts images
-def corrupter(input_image, corrupt_param):
+def corrupter(input_image, corr_ratio):
     dim_row = input_image.shape[0]
     dim_col = input_image.shape[1]
+    total_dim = dim_col*dim_row
     corrupted_image = cp.copy(input_image).flatten()
 
-    for i in range(corrupt_param):
+    points_to_corr = int((total_dim*corr_ratio)/100)
+    for i in range(points_to_corr):
         corr_idx = rnd.randint(0, (dim_row*dim_col-1))
         corrupted_image[corr_idx] *= -1
     corrupted_image.shape = (dim_row, dim_col)
@@ -573,18 +724,85 @@ def corrupter(input_image, corrupt_param):
     return corrupted_image
 
 
-# Plot the results
-def plotter(test_set, result_set):
+# erase a part of the image starting from the top
+def image_eraser(input_image, erase_ratio):
+    dim_row = input_image.shape[0]
+    dim_col = input_image.shape[1]
+    erased_img = cp.copy(input_image).flatten()
+
+    rows_to_erase = int((dim_row*erase_ratio)/100)
+    for i in range(dim_col*rows_to_erase):
+        erased_img[i] = 1
+
+    erased_img.shape = (dim_row, dim_col)
+
+    return erased_img
+
+#
+def semeion_loader(semeion_dir, el):
+    data = np.loadtxt(semeion_dir)
+    n_el = data.shape[0]
+    found = False
+    i = rnd.randint(0, n_el)
+    while ( not found):
+        if data[i][256+el] == 1:
+            found = True
+            image = cp.copy(data[i])
+        else:
+            i+=1
+        if i>=n_el:
+            i = 0
+    image = np.delete(image, [256,257,258,259,260,261,262,263,264,265,266]) # remove semeion label
+    image = image_converter(image)
+    image = image.reshape(16,16)
+    return image
+
+
+# Plot and/or save the results
+def plotter(test_set, result_set, filename, plotbool, savebool):
     ntest = len(test_set)
+    tickslabels_array_big = ([-0.5, 2.5, 5.5, 8.5], ['0', '3', '6', '9'], [-0.5, 2.5, 5.5, 8.5, 11.5], ['0', '3', '6', '9', '12'])
+    tickslabels_array_small = ([-0.5, 4.5, 8.5], ['0', '5', '9'], [-0.5, 5.5, 11.5], ['0', '6', '12'])
+
     k = 1
+    if (ntest>5):
+        tickslabels_array = tickslabels_array_small
+        lsize = 6
+    else:
+        tickslabels_array = tickslabels_array_big
+        lsize = 8
+    fig=plt.figure()
     for i in range(ntest):
-        plt.subplot(ntest, 2, k)
-        plt.imshow(test_set[i], interpolation="nearest")
+
+        tmp = fig.add_subplot(ntest, 2, k)
+        tmp.imshow(test_set[i], "summer",interpolation="nearest")
+
+        tmp.tick_params(labelsize=lsize)
+        tmp.set_xticks(tickslabels_array[0])
+        tmp.set_xticklabels(tickslabels_array[1])
+        tmp.set_yticks(tickslabels_array[2])
+        tmp.set_yticklabels(tickslabels_array[3])
+        if k==1:
+            #tmp.set_title("Test set")
+            tmp.text(.5, 1.2, 'Test set', horizontalalignment='center', transform=tmp.transAxes, fontsize=16)
         k += 1
-        plt.subplot(ntest, 2, k)
-        plt.imshow(result_set[i], interpolation="nearest")
+
+        tmp = fig.add_subplot(ntest, 2, k)
+        tmp.imshow(result_set[i], "winter", interpolation="nearest")
+        tmp.tick_params(labelsize=lsize)
+        tmp.set_xticks(tickslabels_array[0])
+        tmp.set_xticklabels(tickslabels_array[1])
+        tmp.set_yticks(tickslabels_array[2])
+        tmp.set_yticklabels(tickslabels_array[3])
+        if k==2:
+            tmp.text(.5, 1.2, 'Results', horizontalalignment='center', transform=tmp.transAxes, fontsize=16)
         k += 1
-    plt.show()
+    fig.subplots_adjust(hspace=.7, wspace=0.01)
+    if plotbool:
+        plt.show()
+    if savebool:
+        fig.savefig(filename, bbox_inches='tight')
+
 \end{lstlisting}
 
 \clearpage
@@ -597,8 +815,25 @@ import HopfieldNet
 import utils as utl
 import imageManager as iM
 
+# Config variables/constant
+testnumber = 2
+testel = 2  # elements to test
+trainel = 2  # elements to train
+corr_ratio = 0  # percentage of corruption ratio
+erase_ratio = 0 # percentage of image erased
+trainers = ["hebbian", "pseudoinv", "storkey"]
+trainer = trainers[0]
+filetype = "png"
+all_trainer = False  # True for all trainers or False for only one
+plotbool = False
+savebool = True
+filters = ["median", "none"]
+filter = filters[0]
 
-def test1():
+def test1(trainer_type):
+    # corruption_val = 5
+    results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_1"
+
     # Create the training patterns
     a_pattern = np.array([[0, 0, 0, 1, 0, 0, 0],
                           [0, 0, 1, 0, 1, 0, 0],
@@ -631,12 +866,12 @@ def test1():
     train_input = np.array([a_pattern.flatten(), b_pattern.flatten(), c_pattern.flatten()])
 
     #hebbian training
-    net = HopfieldNet.HopfieldNet(train_input, "hebbian", [7, 7])
+    net = HopfieldNet.HopfieldNet(train_input, trainer_type, [7, 7])
 
     # creating test set
-    a_test = utl.corrupter(a_pattern, 5)
-    b_test = utl.corrupter(b_pattern, 5)
-    c_test = utl.corrupter(c_pattern, 5)
+    a_test = utl.corrupter(a_pattern, corr_ratio)
+    b_test = utl.corrupter(b_pattern, corr_ratio)
+    c_test = utl.corrupter(c_pattern, corr_ratio)
 
     # training and testing the net
     a_result = net.test(a_test)
@@ -646,76 +881,174 @@ def test1():
     #Show the results
     test_set = np.array([a_test, b_test, c_test])
     result_set = np.array([a_result, b_result, c_result])
-    utl.plotter(test_set, result_set)
+    utl.plotter(test_set, result_set, results_dir, plotbool, savebool)
 
 
-def test2():
+def test2(trainer_type, testel, trainel):
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/courier_digits_data_set/tiff_images_swidth"
+    results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_2" + "/" + trainer_type
+    filename = results_dir + "/" + filter + "_" +  "tr" + str(trainel) + "_ts"+ str(testel)  + "_c" + str(corr_ratio) + "_e" + str(erase_ratio) + "_" + trainer_type + "." + filetype
     dim = [14, 9]  # in the form rows * cols
-    testel = 8  # elements for training
-    corruption_val = 30
+    # testel = 8  # elements for training
+    #corruption_val = 5
+    # trainers = ["hebbian","pseudoinv","storkey"]
 
     image_dim = [dim[1], dim[0]]  # changing shape for images
 
     # Loading images data set
-    temp_train = iM.collectimages(image_dim, images_dir)
-
-    train_input = np.zeros((testel, dim[0] * dim[1]))
-    for i in range(testel):
-        train_input[i] = temp_train[i]
+    temp_train = iM.collectimages(image_dim, images_dir, filter)
 
     # image conversion to 1 and -1 for Hopfield net
-    for i in range(train_input.shape[0]):
-        temp = utl.image_converter(train_input[i].reshape(dim))
-        train_input[i] = temp.flatten()
+    for i in range(temp_train.shape[0]):
+        temp = utl.image_converter(temp_train[i].reshape(dim))
+        temp_train[i] = temp.flatten()
+
+    train_input = np.zeros((trainel, dim[0] * dim[1]))
+    for i in range(trainel):
+        train_input[i] = temp_train[i]
 
     # training the net
-    net = HopfieldNet.HopfieldNet(train_input, "hebbian", dim)
+    net = HopfieldNet.HopfieldNet(train_input, trainer_type, dim)
 
     # testing the net
     test_set = np.zeros((testel, dim[0], dim[1]))
     result_set = np.zeros((testel, dim[0], dim[1]))
     for i in range(testel):
-        test_set[i] = utl.corrupter(train_input[i].reshape(dim), corruption_val)
+        test_set[i] = temp_train[i].reshape(dim)
+        if corr_ratio != 0:
+            test_set[i] = utl.corrupter(test_set[i], corr_ratio)
+        if erase_ratio != 0:
+            test_set[i] = utl.image_eraser(test_set[i], erase_ratio)
         result_set[i] = net.test(test_set[i])
 
-    # Plotting results
-    utl.plotter(test_set, result_set)
+    # Plotting and saving results
+    utl.plotter(test_set, result_set, filename, plotbool, savebool)
 
-def test3():
+
+def test3(trainer_type, testel, trainel):
     images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/digital7_digit_data_set/tiff_images_rawcut"
+    results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_3" + "/" + trainer_type
+    filename = results_dir + "/" + "tr" + str(trainel) + "_ts"+ str(testel)  + "_c" + str(corr_ratio) + "_e" + str(erase_ratio) + "_" + trainer_type + "." + filetype
     dim = [25, 16]  # in the form rows * cols
-    testel = 10  # elements for training
-    corruption_val = 10
+    # testel = 5  # elements for training
+    #corruption_val = 10
 
     image_dim = [dim[1], dim[0]]  # changing shape for images
 
     # Loading images data set
-    temp_train = iM.collectimages(image_dim, images_dir)
-
-    train_input = np.zeros((testel, dim[0] * dim[1]))
-    for i in range(testel):
-        train_input[i] = temp_train[i]
+    temp_train = iM.collectimages(image_dim, images_dir, filter)
 
     # image conversion to 1 and -1 for Hopfield net
-    for i in range(train_input.shape[0]):
-        temp = utl.image_converter(train_input[i].reshape(dim))
-        train_input[i] = temp.flatten()
+    for i in range(temp_train.shape[0]):
+        temp = utl.image_converter(temp_train[i].reshape(dim))
+        temp_train[i] = temp.flatten()
+
+    train_input = np.zeros((trainel, dim[0] * dim[1]))
+    for i in range(trainel):
+        train_input[i] = temp_train[i]
 
     # training the net
-    net = HopfieldNet.HopfieldNet(train_input, "pseudoinv", dim)
+    net = HopfieldNet.HopfieldNet(train_input, trainer_type, dim)
 
     # testing the net
     test_set = np.zeros((testel, dim[0], dim[1]))
     result_set = np.zeros((testel, dim[0], dim[1]))
     for i in range(testel):
-        test_set[i] = utl.corrupter(train_input[i].reshape(dim), corruption_val)
+        test_set[i] = train_input[i].reshape(dim)
+        if corr_ratio != 0:
+            test_set[i] = utl.corrupter(test_set[i], corr_ratio)
+        if erase_ratio != 0:
+            test_set[i] = utl.image_eraser(test_set[i], erase_ratio)
         result_set[i] = net.test(test_set[i])
 
-    # Plotting results
-    utl.plotter(test_set, result_set)
+    # Plotting and saving results
+    utl.plotter(test_set, result_set, filename, plotbool, savebool)
 
-test3()
+def test_semeion(trainer_type, testel, trainel):
+    images_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/dummy_data_set/courier_digits_data_set/tiff_images_swidth"
+    results_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/results/test_semeion" + "/" + trainer_type
+    semeion_dir = "/Users/jian/Dropbox/AI_dropbox/progetto_2014/semeion_data_set/semeion.data"
+    filename = results_dir + "/" + "tr" + str(trainel) + "_ts"+ str(testel)  + "_c" + str(corr_ratio) + "_e" + str(erase_ratio) + "_" + trainer_type + "." + filetype
+    dim = [16, 16]
+
+    image_dim = [dim[1], dim[0]]  # changing shape for images
+
+    # Loading images data set
+    temp_train = iM.collectimages(image_dim, images_dir, filter)
+
+    # image conversion to 1 and -1 for Hopfield net
+    for i in range(temp_train.shape[0]):
+        temp = utl.image_converter(temp_train[i].reshape(dim))
+        temp_train[i] = temp.flatten()
+
+    train_input = np.zeros((trainel, dim[0] * dim[1]))
+    for i in range(trainel):
+        train_input[i] = temp_train[i]
+
+    # training the net
+    net = HopfieldNet.HopfieldNet(train_input, trainer_type, dim)
+
+    # loading semeion data set
+    test_set = np.zeros((testel, dim[0], dim[1]))
+    for i in range(testel):
+        test_set[i] = utl.semeion_loader(semeion_dir, i)
+
+    # testing the net
+    result_set = np.zeros((testel, dim[0], dim[1]))
+    for i in range(testel):
+        # test_set[i] = temp_train[i].reshape(dim)
+        if corr_ratio != 0:
+            test_set[i] = utl.corrupter(test_set[i], corr_ratio)
+        if erase_ratio != 0:
+            test_set[i] = utl.image_eraser(test_set[i], erase_ratio)
+        result_set[i] = net.test(test_set[i])
+
+    # Plotting and saving results
+    utl.plotter(test_set, result_set, filename, plotbool, savebool)
+
+
+    # loading semeion data set for training
+
+
+
+def main():
+    if all_trainer:
+        iterator = trainers
+    else:
+        iterator = [trainer]
+    for i in range(len(iterator)):
+        print("Now trainer is: ", iterator[i])
+        if testnumber == 1:
+            test1(iterator[i])
+        elif testnumber == 2:
+            test2(iterator[i], testel, trainel)
+        elif testnumber == 3:
+            test3(iterator[i], testel, trainel)
+        elif testnumber == 4:
+            test_semeion(iterator[i], testel, trainel)
+    #total2()
+    #filter_hebbian_2()
+
+def total2():
+    test_couples = [[2,2],[2,3],[3,2],[5,5],[5,10],[8,8],[10,5],[10,10]]
+    for i in range(len(trainers)):
+        for j in range(len(test_couples)):
+            testel = test_couples[j][1]
+            trainel = test_couples[j][0]
+            test2(trainers[i], testel, trainel)
+
+# remember to set hebbian as trainer before executing
+def filter_hebbian_2():
+
+    test_couples = [[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10]]
+
+    for j in range(len(test_couples)):
+        testel = test_couples[j][1]
+        trainel = test_couples[j][0]
+        test2(trainer, testel, trainel)
+
+if __name__ == "__main__":
+    main()
 \end{lstlisting}
 
 %\label{app:appendixB}

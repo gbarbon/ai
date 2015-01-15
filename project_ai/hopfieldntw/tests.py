@@ -9,8 +9,8 @@ import imageManager as iM
 testnumber = 2
 testel = 2  # elements to test
 trainel = 2  # elements to train
-corr_ratio = 0  # percentage of corruption ratio
-erase_ratio = 0 # percentage of image erased
+corr_ratio = 20  # percentage of corruption ratio
+erase_ratio = 30 # percentage of image erased
 trainers = ["hebbian", "pseudoinv", "storkey"]
 trainer = trainers[0]
 filetype = "png"
@@ -216,11 +216,12 @@ def main():
             test3(iterator[i], testel, trainel)
         elif testnumber == 4:
             test_semeion(iterator[i], testel, trainel)
-    #total2()
+    total2()
     #filter_hebbian_2()
 
 def total2():
-    test_couples = [[2,2],[2,3],[3,2],[5,5],[5,10],[8,8],[10,5],[10,10]]
+    #test_couples = [[2,2],[2,3],[3,2],[5,5],[5,10],[8,8],[10,5],[10,10]]
+    test_couples = [[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10]]
     for i in range(len(trainers)):
         for j in range(len(test_couples)):
             testel = test_couples[j][1]

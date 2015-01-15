@@ -1,4 +1,9 @@
 \beamer@endinputifotherversion {3.26pt}
-\beamer@sectionintoc {1}{First Section}{3}{0}{1}
-\beamer@subsectionintoc {1}{1}{Subsection Example}{3}{0}{1}
-\beamer@sectionintoc {2}{Second Section}{7}{0}{2}
+\beamer@sectionintoc {1}{The Hopfield Networks}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Introduction}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Learning Algorithms}{7}{0}{1}
+\beamer@sectionintoc {2}{Implementation}{12}{0}{2}
+\beamer@sectionintoc {3}{Testing the net}{14}{0}{3}
+\beamer@subsectionintoc {3}{1}{Results}{14}{0}{3}
+\beamer@subsectionintoc {3}{2}{Filtering}{18}{0}{3}
+\beamer@subsectionintoc {3}{3}{Conclusion}{19}{0}{3}
